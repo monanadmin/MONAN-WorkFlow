@@ -1,12 +1,24 @@
 suite MONAN
 
-   edit ECF_HOME "/mnt/beegfs/carlos.souza/repo_Monan/i507-MONAN-WorkFlow/MONAN-WorkFlow/ecflow"
-   edit ECF_HOST "egeon-login1.cptec.inpe.br"
-   edit ECF_INCLUDE "/mnt/beegfs/carlos.souza/repo_Monan/i507-MONAN-WorkFlow/MONAN-WorkFlow/ecflow/includes"
-   edit ECF_TRIES "1"
+  edit ECF_HOME "/mnt/beegfs/carlos.souza/repo_Monan/i507-MONAN-WorkFlow/MONAN-WorkFlow/ecflow"
+  edit ECF_HOST "egeon-login1.cptec.inpe.br"
+  edit ECF_INCLUDE "/mnt/beegfs/carlos.souza/repo_Monan/i507-MONAN-WorkFlow/MONAN-WorkFlow/ecflow/includes"
+  edit ECF_TRIES "1"
 
-   task First_test
-     label Info "Mensagem..."
-     cron 12:00
+  task Pre
+    label Info "Mensagem..."
+    cron 12:00
+
+  task Model
+    label Info "Mensagem..."
+
+  task Post
+    label Info "Mensagem..."
+
+  task Prods
+    label Info "Mensagem..."
+
+  task Manut
+    label Info "Mensagem..."
 
 endsuite

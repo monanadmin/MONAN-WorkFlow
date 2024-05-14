@@ -1,0 +1,13 @@
+%include <head.h>
+      
+
+ecflow_client --label=Info "Inicio... "
+
+
+echo "This is my first test."
+echo ""
+echo "Here I can use ECF environment variables, like this: %ECF_HOME%"
+
+
+%include <tail.h>
+# file is served by ecflow-server
