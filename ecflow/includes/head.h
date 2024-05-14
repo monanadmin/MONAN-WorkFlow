@@ -47,3 +47,10 @@ trap '{ echo "Killed by a signal"; ERROR ; }' 1 2 3 4 5 6 7 8 10 12 13 15
 #  Exports de datas/dirs importantes
 #
 
+
+
+
+
+echo ""
+echo "===============  MY TASK STARTS HERE =================="
+echo ""
