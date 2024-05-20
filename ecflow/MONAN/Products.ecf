@@ -1,0 +1,84 @@
+%include <head.h>
+      
+#-----------------------------------------------------------------------------#
+# !SCRIPT: run_poducts
+#
+# !DESCRIPTION:
+#     Script to run the products of pos-processing of MONAN model .
+#     
+#     Performs the following tasks:
+# 
+#        o Check all input files before (post-processed files)
+#        o Creates the submition script
+#        o Submit the products scripts
+#        o Veriffy all products generated
+#        
+#
+#-----------------------------------------------------------------------------#
+
+# Set environment variables exports:
+echo ""
+echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN Products...\n"
+. %ECF_HOME%/%SUITE%/Products/scripts/setenv.bash
+
+
+
+# Standart directories variables:---------------------------------------
+DIRHOMES=${DIR_PRODUCTS}/ecflow/%SUITE%/Products;  mkdir -p ${DIRHOMES}  
+DIRHOMED=${DIR_PRODUCTD}/ecflow/%SUITE%/Products;  mkdir -p ${DIRHOMED}  
+SCRIPTS=${DIRHOMES}/scripts;                       mkdir -p ${SCRIPTS}
+#DATAIN=${DIRHOMED}/datain;                        #mkdir -p ${DATAIN}
+DATAOUT=${DIRHOMED}/dataout;                       mkdir -p ${DATAOUT}
+#SOURCES=${DIRHOMES}/sources;                      #mkdir -p ${SOURCES}
+#EXECS=${DIRHOMED}/execs;                          #mkdir -p ${EXECS}
+#----------------------------------------------------------------------
+
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYY%%MM%%DD%00
+YYYYMMDDHHi=2024010100
+FCST=%FCSTH%
+#-------------------------------------------------------
+
+
+mkdir -p ${DATAOUT}/${YYYYMMDDHHi}/logs
+
+
+rm -f ${SCRIPTS}/sub_py.bash
+cat << EOSH > ${SCRIPTS}/sub_py.bash
+#!/bin/bash
+#SBATCH --job-name=${PRODS_jobname}
+#SBATCH --nodes=${PRODS_nnodes}
+#SBATCH --partition=${PRODS_QUEUE}
+#SBATCH --tasks-per-node=${PRODS_ncpn}
+#SBATCH --ntasks=${PRODS_ncores}
+#SBATCH --time=${PRODS_walltime}
+#SBATCH --output=${DATAOUT}/${YYYYMMDDHHi}/logs/subpy.bash.o%%j    # File name for standard output
+#SBATCH --error=${DATAOUT}/${YYYYMMDDHHi}/logs/subpy.bash.e%%j     # File name for standard error output
+#SBATCH --exclusive
+
+
+
+cd \$SLURM_SUBMIT_DIR
+echo \$SLURM_SUBMIT_DIR
+echo "Lista de módulos carregados: "
+module list
+echo "========"
+
+ulimit -s unlimited
+MPI_PARAMS="-iface ib0 -bind-to core -map-by core"
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export I_MPI_DEBUG=5
+
+echo "python /home/luiz.rodrigues/sanity_check/src/gera_figs.py --basedir ${DATAOUT}/${YYYYMMDDHHi} --datein ${YYYYMMDDHHi} --suffix .00.00.x${RES}L55 --prefix MONAN_DIAG_G_POS_${EXP}_ --outdir ${DATAOUT}/${YYYYMMDDHHi} --mxhour ${FCST}"
+
+EOSH
+chmod a+x ${SCRIPTS}/sub_py.bash
+sbatch --wait ${SCRIPTS}/sub_py.bash
+
+
+%include <tail.h>
+# file is served by ecflow-server

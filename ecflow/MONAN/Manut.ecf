@@ -3,10 +3,20 @@
 
 ecflow_client --label=Info "Inicio... "
 
+# Input variables:--------------------------------------
+EXP=GFS
+RES=1024002
+YYYYMMDDHHi=%YYYY%%MM%%DD%00
+FCST=240
+#-------------------------------------------------------
 
-echo "This is my first test."
-echo ""
-echo "Here I can use ECF environment variables, like this: %ECF_HOME%"
+
+# Este script tem como funcao: -----------------------------------------------------------
+#  - Apagar arquivos de %NDAYSKEEP% atras.
+#  - Mover arquivos (figuras, dados de modelos, recortes, etc) para area externa de ftp
+#  ---------------------------------------------------------------------------------------
+
+echo "%ECF_HOME%/%SUITE%/scripts_CD-CT/scripts/6.do_manut.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}" 
 
 
 %include <tail.h>
