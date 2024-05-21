@@ -1,8 +1,8 @@
 suite MONAN
 
-  edit ECF_HOME "/mnt/beegfs/carlos.souza/repo_Monan/i508-MONAN-WorkFlow/MONAN-WorkFlow/ecflow"
+  edit ECF_HOME "/home/monan/MONAN-WorkFlow/ecflow"
   edit ECF_HOST "egeon-login1.cptec.inpe.br"
-  edit ECF_INCLUDE "/mnt/beegfs/carlos.souza/repo_Monan/i508-MONAN-WorkFlow/MONAN-WorkFlow/ecflow/includes"
+  edit ECF_INCLUDE "/home/monan/MONAN-WorkFlow/ecflow/includes"
   edit ECF_TRIES "1"
 
   edit EXP "GFS"
@@ -11,11 +11,11 @@ suite MONAN
 
   task Products
     label Info "Mensagem..."
-    cron 12:00
+    cron 13:00
 
   task Manut
+    trigger /MONAN/Products == complete
     edit NDAYSKEEP 180
     label Info "Mensagem..."
-    trigger /MONAN/Products == complete
 
 endsuite

@@ -4,19 +4,20 @@
 ecflow_client --label=Info "Inicio... "
 
 # Input variables:--------------------------------------
-EXP=GFS
-RES=1024002
+EXP=%EXP%
+RES=%RES%
 YYYYMMDDHHi=%YYYY%%MM%%DD%00
-FCST=240
+FCST=%FCSTH%
+DIRFIGURES=/mnt/beegfs/monan/scripts_CD-CT/dataout/${YYYYMMDDHHi}/figures
+DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
 #-------------------------------------------------------
 
 
-# Este script tem como funcao: -----------------------------------------------------------
-#  - Apagar arquivos de %NDAYSKEEP% atras.
-#  - Mover arquivos (figuras, dados de modelos, recortes, etc) para area externa de ftp
-#  ---------------------------------------------------------------------------------------
 
-echo "%ECF_HOME%/%SUITE%/scripts_CD-CT/scripts/6.do_manut.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}" 
+# Veriffy all products generated and move them to ftp area
+ecflow_client --label=Info "Copying all pngs generated to ftp area. "
+cp -f ${DIRFIGURES}/*png ${DIRFTP}/
+
 
 
 %include <tail.h>

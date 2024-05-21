@@ -16,19 +16,26 @@
 #
 #-----------------------------------------------------------------------------#
 
+ecflow_client --label=Info "instalando python, caso nao exista. "
+module load python-3.9.15-gcc-9.4.0-f466wuv
+python -m venv .venv 
+source .venv/bin/activate
+pip install -r /home/monan/MONAN-WorkFlow/ecflow/MONAN/Products/scripts/requirements.txt 
+
 # Set environment variables exports:
 echo ""
 echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN Products...\n"
 . %ECF_HOME%/%SUITE%/Products/scripts/setenv.bash
 
 
+ecflow_client --label=Info "sentev executado. "
 
 # Standart directories variables:---------------------------------------
 DIRHOMES=${DIR_PRODUCTS}/ecflow/%SUITE%/Products;  mkdir -p ${DIRHOMES}  
 DIRHOMED=${DIR_PRODUCTD}/ecflow/%SUITE%/Products;  mkdir -p ${DIRHOMED}  
 SCRIPTS=${DIRHOMES}/scripts;                       mkdir -p ${SCRIPTS}
 #DATAIN=${DIRHOMED}/datain;                        #mkdir -p ${DATAIN}
-DATAOUT=${DIRHOMED}/dataout;                       mkdir -p ${DATAOUT}
+DATAOUT=/mnt/beegfs/monan/scripts_CD-CT/dataout   
 #SOURCES=${DIRHOMES}/sources;                      #mkdir -p ${SOURCES}
 #EXECS=${DIRHOMED}/execs;                          #mkdir -p ${EXECS}
 #----------------------------------------------------------------------
@@ -38,16 +45,15 @@ DATAOUT=${DIRHOMED}/dataout;                       mkdir -p ${DATAOUT}
 EXP=%EXP%
 RES=%RES%
 YYYYMMDDHHi=%YYYY%%MM%%DD%00
-YYYYMMDDHHi=2024010100
 FCST=%FCSTH%
 #-------------------------------------------------------
-mkdir -p ${DATAOUT}/${YYYYMMDDHHi}/logs
 
 
 
 
+ecflow_client --label=Info " Check all input files before"
 # Check all input files before
-files_needed=("${DIRHOMED}/../scripts_CD-CT/dataout/${YYYYMMDDHHi}/Post/MONAN_DIAG_G_POS_${EXP}_${YYYYMMDDHHi}.00.00.x${RES}L55.nc")
+files_needed=("/mnt/beegfs/monan/scripts_CD-CT/dataout/${YYYYMMDDHHi}/Post/MONAN_DIAG_G_POS_${EXP}_${YYYYMMDDHHi}.00.00.x${RES}L55.nc")
 for file in "${files_needed[@]}"
 do
   if [ ! -s "${file}" ]
@@ -58,7 +64,7 @@ do
   fi
 done
 
-
+ecflow_client --label=Info "Creates the submition script "
 # Creates the submition script
 rm -f ${SCRIPTS}/sub_py.bash
 cat << EOSH > ${SCRIPTS}/sub_py.bash
@@ -69,11 +75,15 @@ cat << EOSH > ${SCRIPTS}/sub_py.bash
 #SBATCH --tasks-per-node=${PRODS_ncpn}
 #SBATCH --ntasks=${PRODS_ncores}
 #SBATCH --time=${PRODS_walltime}
-#SBATCH --output=${DATAOUT}/${YYYYMMDDHHi}/logs/subpy.bash.o%%j    # File name for standard output
-#SBATCH --error=${DATAOUT}/${YYYYMMDDHHi}/logs/subpy.bash.e%%j     # File name for standard error output
+#SBATCH --output=${DATAOUT}/logs/subpy.bash.o%%j    # File name for standard output
+#SBATCH --error=${DATAOUT}/logs/subpy.bash.e%%j     # File name for standard error output
 #SBATCH --exclusive
 
 
+# Set environment variables exports:
+echo ""
+echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN Products...\n"
+. %ECF_HOME%/%SUITE%/Products/scripts/setenv.bash
 
 cd \$SLURM_SUBMIT_DIR
 echo \$SLURM_SUBMIT_DIR
@@ -87,10 +97,11 @@ export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export I_MPI_DEBUG=5
 
-echo "python /home/luiz.rodrigues/sanity_check/src/gera_figs.py --basedir ${DATAOUT}/${YYYYMMDDHHi} --datein ${YYYYMMDDHHi} --suffix .00.00.x${RES}L55 --prefix MONAN_DIAG_G_POS_${EXP}_ --outdir ${DATAOUT}/${YYYYMMDDHHi} --mxhour ${FCST}"
+python ${SCRIPTS}/gera_figs.py --datein ${YYYYMMDDHHi} --suffix .00.00.x${RES}L55 --prefix MONAN_DIAG_G_POS_${EXP}_  --mxhour ${FCST}
 
 EOSH
 
+ecflow_client --label=Info "Submit the products script "
 # Submit the products scripts
 chmod a+x ${SCRIPTS}/sub_py.bash
 sbatch --wait ${SCRIPTS}/sub_py.bash

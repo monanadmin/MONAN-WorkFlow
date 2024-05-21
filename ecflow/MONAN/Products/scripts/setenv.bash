@@ -19,12 +19,10 @@ module load python-3.9.13-gcc-9.4.0-moxjnc6
 module load ecflow/5.8.4
 module list
 
-
-
-# python -m venv .venv
-# deactivate 
-# source .venv/bin/activate
-# pip install -r requirements.txt 
+set +e
+unalias python
+set -e
+source .venv/bin/activate
 
 # MONAN-suite install root directories:
 # Put your directories:

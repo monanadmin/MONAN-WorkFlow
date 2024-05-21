@@ -10,7 +10,7 @@ fi
 
 suite=${1}
 
-export ECF_PORT=3142
+export ECF_PORT=8146
 
 ecflow_client --load=${suite}.def
 ecflow_client --begin=${suite}
