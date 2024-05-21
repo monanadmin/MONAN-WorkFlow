@@ -41,11 +41,25 @@ YYYYMMDDHHi=%YYYY%%MM%%DD%00
 YYYYMMDDHHi=2024010100
 FCST=%FCSTH%
 #-------------------------------------------------------
-
-
 mkdir -p ${DATAOUT}/${YYYYMMDDHHi}/logs
 
 
+
+
+# Check all input files before
+files_needed=("${DIRHOMED}/../scripts_CD-CT/dataout/${YYYYMMDDHHi}/Post/MONAN_DIAG_G_POS_${EXP}_${YYYYMMDDHHi}.00.00.x${RES}L55.nc")
+for file in "${files_needed[@]}"
+do
+  if [ ! -s "${file}" ]
+  then
+    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"	  
+    echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
+    exit -1
+  fi
+done
+
+
+# Creates the submition script
 rm -f ${SCRIPTS}/sub_py.bash
 cat << EOSH > ${SCRIPTS}/sub_py.bash
 #!/bin/bash
@@ -76,8 +90,27 @@ export I_MPI_DEBUG=5
 echo "python /home/luiz.rodrigues/sanity_check/src/gera_figs.py --basedir ${DATAOUT}/${YYYYMMDDHHi} --datein ${YYYYMMDDHHi} --suffix .00.00.x${RES}L55 --prefix MONAN_DIAG_G_POS_${EXP}_ --outdir ${DATAOUT}/${YYYYMMDDHHi} --mxhour ${FCST}"
 
 EOSH
+
+# Submit the products scripts
 chmod a+x ${SCRIPTS}/sub_py.bash
 sbatch --wait ${SCRIPTS}/sub_py.bash
+
+
+
+# Veriffy all products generated
+#prods_generated=("")
+#for file in "${prods_generated[@]}"
+#do
+#  if [ ! -s "${file}" ]
+#  then
+#    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"	  
+#    echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
+#    exit -1
+#  fi
+#done
+
+
+
 
 
 %include <tail.h>
