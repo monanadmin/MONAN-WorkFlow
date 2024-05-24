@@ -1,7 +1,7 @@
 #!/bin/ksh
 
-export ECF_PORT=3142
+export ECF_PORT=8146
 
-ecflow_server --port=3142 &
+ecflow_server --port=8146 &
 
 
