@@ -27,6 +27,5 @@ export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export I_MPI_DEBUG=5
 
-#python /home/monan/MONAN-WorkFlow/ecflow/MONAN/Products/scripts/gera_figs.py --datein 2024052100 --suffix .00.00.x1024002L55 --prefix MONAN_DIAG_G_POS_GFS_  --mxhour 4
-sleep 5
+python /home/monan/MONAN-WorkFlow/ecflow/MONAN/Products/scripts/gera_figs.py --datein 2024052400 --suffix .00.00.x1024002L55 --prefix MONAN_DIAG_G_POS_GFS_  --mxhour 240
 

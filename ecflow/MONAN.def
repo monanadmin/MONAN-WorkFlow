@@ -14,7 +14,7 @@ suite MONAN
     cron 13:00
 
   task Manut
-    trigger /MONAN/Products == complete
+    trigger /MONAN/Products eq complete
     edit NDAYSKEEP 180
     label Info "Mensagem..."
 

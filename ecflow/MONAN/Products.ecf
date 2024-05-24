@@ -49,6 +49,10 @@ FCST=%FCSTH%
 #-------------------------------------------------------
 
 
+# Local variables:--------------------------------------
+DIRFIGURES=/mnt/beegfs/monan/scripts_CD-CT/dataout/${YYYYMMDDHHi}/figures
+DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
+#-------------------------------------------------------
 
 
 ecflow_client --label=Info " Check all input files before"
@@ -107,6 +111,8 @@ chmod a+x ${SCRIPTS}/sub_py.bash
 sbatch --wait ${SCRIPTS}/sub_py.bash
 
 
+ecflow_client --label=Info "Copying pngs to ftp area. "
+cp -f ${DIRFIGURES}/*png ${DIRFTP}/
 
 # Veriffy all products generated
 #prods_generated=("")
