@@ -161,10 +161,10 @@ print("Processing ",nsteps," outputs from ",date_in," in steps of ",tstep," h" )
 
 #Create the name of input file ands open dataset
 file_input = "{0}/{1}/Post/{2}{1}{3}.nc".format(base_input_dir,date_in,prefix,sufix)
-dataset = xr.open_dataset(file_input)
 
-print("Getting variables, please wait! This will take a while...")
 start_time = time.time()
+print("Getting variables, please wait! This will take a while...")
+dataset = xr.open_dataset(file_input)
 #Getting variables from input file dataset
 latitude = dataset['latitude'].values
 longitude = dataset['longitude'].values
