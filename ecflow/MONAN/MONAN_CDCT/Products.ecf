@@ -20,22 +20,23 @@ ecflow_client --label=Info "instalando python, caso nao exista. "
 module load python-3.9.15-gcc-9.4.0-f466wuv
 python -m venv .venv 
 source .venv/bin/activate
-pip install -r /home/monan/MONAN-WorkFlow/ecflow/MONAN/Products/scripts/requirements.txt 
+pip install -r /mnt/beegfs/carlos.souza/repo_Monan/i522-MONAN-WorkFlow/MONAN-WorkFlow/ecflow/MONAN/MONAN_CDCT/Products/scripts/requirements.txt 
 
 # Set environment variables exports:
 echo ""
 echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN Products...\n"
-. %ECF_HOME%/%SUITE%/Products/scripts/setenv.bash
+. %ECF_HOME%/%SUITE%/%FAMILY%/Products/scripts/setenv.bash
 
 
 ecflow_client --label=Info "sentev executado. "
 
 # Standart directories variables:---------------------------------------
-DIRHOMES=${DIR_PRODUCTS}/ecflow/%SUITE%/Products;  mkdir -p ${DIRHOMES}  
-DIRHOMED=${DIR_PRODUCTD}/ecflow/%SUITE%/Products;  mkdir -p ${DIRHOMED}  
+DIRHOMES=${DIR_PRODUCTS}/ecflow/%SUITE%/%FAMILY%/Products;  mkdir -p ${DIRHOMES}  
+DIRHOMED=${DIR_PRODUCTD}/ecflow/%SUITE%/%FAMILY%/Products;  mkdir -p ${DIRHOMED}  
 SCRIPTS=${DIRHOMES}/scripts;                       mkdir -p ${SCRIPTS}
 #DATAIN=${DIRHOMED}/datain;                        #mkdir -p ${DATAIN}
-DATAOUT=/mnt/beegfs/monan/scripts_CD-CT/dataout   
+#contamonan: DATAOUT=/mnt/beegfs/monan/scripts_CD-CT/dataout   
+DATAOUT=${DIRHOMED}/dataout   ; mkdir -p ${DATAOUT}
 #SOURCES=${DIRHOMES}/sources;                      #mkdir -p ${SOURCES}
 #EXECS=${DIRHOMED}/execs;                          #mkdir -p ${EXECS}
 #----------------------------------------------------------------------
@@ -71,6 +72,7 @@ done
 ecflow_client --label=Info "Creates the submition script "
 # Creates the submition script
 rm -f ${SCRIPTS}/sub_py.bash
+mkdir -p ${DATAOUT}/logs
 cat << EOSH > ${SCRIPTS}/sub_py.bash
 #!/bin/bash
 #SBATCH --job-name=${PRODS_jobname}
@@ -87,7 +89,7 @@ cat << EOSH > ${SCRIPTS}/sub_py.bash
 # Set environment variables exports:
 echo ""
 echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN Products...\n"
-. %ECF_HOME%/%SUITE%/Products/scripts/setenv.bash
+. %ECF_HOME%/%SUITE%/%FAMILY%/Products/scripts/setenv.bash
 
 cd \$SLURM_SUBMIT_DIR
 echo \$SLURM_SUBMIT_DIR
@@ -101,8 +103,9 @@ export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export I_MPI_DEBUG=5
 
-python ${SCRIPTS}/gera_figs.py --datein ${YYYYMMDDHHi} --suffix .00.00.x${RES}L55 --prefix MONAN_DIAG_G_POS_${EXP}_  --mxhour ${FCST}
-
+# just for testing in my count on branch while desenv:
+echo "python ${SCRIPTS}/gera_figs.py --datein ${YYYYMMDDHHi} --suffix .00.00.x${RES}L55 --prefix MONAN_DIAG_G_POS_${EXP}_  --mxhour ${FCST}"
+sleep 5
 EOSH
 
 ecflow_client --label=Info "Submit the products script "
@@ -112,7 +115,8 @@ sbatch --wait ${SCRIPTS}/sub_py.bash
 
 
 ecflow_client --label=Info "Copying pngs to ftp area. "
-cp -f ${DIRFIGURES}/*png ${DIRFTP}/
+echo "cp -f ${DIRFIGURES}/*png ${DIRFTP}/"
+sleep 5
 
 # Veriffy all products generated
 #prods_generated=("")

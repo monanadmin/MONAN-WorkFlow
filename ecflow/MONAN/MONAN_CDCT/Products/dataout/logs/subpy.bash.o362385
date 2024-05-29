@@ -1,0 +1,33 @@
+
+[1;32m==>[0m Moduling environment for MONAN Products...
+
+
+Currently Loaded Modules:
+  1) autotools                       9) phdf5/1.10.8
+  2) prun/2.2                       10) cdo-2.0.4-gcc-9.4.0-bjulvnd
+  3) gnu9/9.4.0                     11) opengrads-2.2.1
+  4) ohpc                           12) nco-5.0.1-gcc-11.2.0-u37c3hb
+  5) netcdf/4.7.4                   13) metis/5.1.0
+  6) netcdf-fortran/4.5.3           14) python-3.9.13-gcc-9.4.0-moxjnc6
+  7) mpich-4.0.2-gcc-9.4.0-gpof2pv  15) ecflow/5.8.4
+  8) hwloc/2.5.0
+
+ 
+
+/mnt/beegfs/carlos.souza/repo_Monan/i522-MONAN-WorkFlow/MONAN-WorkFlow/ecflow/eclogs
+Lista de módulos carregados: 
+
+Currently Loaded Modules:
+  1) autotools                       9) phdf5/1.10.8
+  2) prun/2.2                       10) cdo-2.0.4-gcc-9.4.0-bjulvnd
+  3) gnu9/9.4.0                     11) opengrads-2.2.1
+  4) ohpc                           12) nco-5.0.1-gcc-11.2.0-u37c3hb
+  5) netcdf/4.7.4                   13) metis/5.1.0
+  6) netcdf-fortran/4.5.3           14) python-3.9.13-gcc-9.4.0-moxjnc6
+  7) mpich-4.0.2-gcc-9.4.0-gpof2pv  15) ecflow/5.8.4
+  8) hwloc/2.5.0
+
+ 
+
+========
+python /mnt/beegfs/carlos.souza/repo_Monan/i522-MONAN-WorkFlow/MONAN-WorkFlow/ecflow/MONAN/MONAN_CDCT/Products/scripts/gera_figs.py --datein 2024052900 --suffix .00.00.x1024002L55 --prefix MONAN_DIAG_G_POS_GFS_  --mxhour 240
