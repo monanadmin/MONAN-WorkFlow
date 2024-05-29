@@ -44,15 +44,29 @@ def clean():
     plt.clf()
     plt.cla()
 
+
+def get_new_levels(levels, vmin, vmax):
+
+    levels = np.asarray(levels)
+
+    # Adjust levels to include vmin and vmax if necessary
+    if vmin < levels[0]:
+        levels = np.insert(levels, 0, vmin)
+    if vmax > levels[-1]:
+        levels = np.append(levels, vmax)
+    return levels
+
+
 def plotInFixLev(step,m,minv,maxv,levels,var,unit,tit1,tit2,newdate,figname,output_dir,prefix,date_in,sufix):
     # This functin generate the figure for fields in a fix levels (e.g. t2m, surface_pressure, etc)
     #Ajusta os valores máximos e mínimos da escala
     vmin=minv
     vmax=maxv
+    levels = get_new_levels(levels, vmin, vmax)
     #Cria os ranges de valores da escala a ser plotada (clevs)
     cs = m.contourf(x, y, var[step,:,:], levels = levels, cmap='jet', vmin=vmin, vmax =vmax)
     #cs = m.quiver(x, y, vu[0,:,:], vv[0,:,:], color='Teal', angles='xy', scale=100, headlength=7)
-    plt.colorbar(cs, orientation='vertical', label=unit)
+    plt.colorbar(cs, orientation='horizontal', label=unit, pad=0.05, aspect=50)
     title = "MONAN - {0} at level {1} for {2}".format(tit1,tit2,newdate)
     plt.title(title)
     date_out = newdate.strftime("%Y%m%d%H")
@@ -63,15 +77,17 @@ def plotInFixLev(step,m,minv,maxv,levels,var,unit,tit1,tit2,newdate,figname,outp
     clean()
     makegrid(m)
 
+
 def plotInLev(lev,step,m,minv,maxv,levels,var,unit,tit1,tit2,newdate,figname,output_dir,prefix,date_in,sufix):
     # This functin generate the figure for fields in a pressure levels (e.g. temperature, relhum)
     #Ajusta os valores máximos e mínimos da escala
     vmin=minv
     vmax=maxv
+    levels = get_new_levels(levels, vmin, vmax)
     #Cria os ranges de valores da escala a ser plotada (clevs)
     cs = m.contourf(x, y, var[step,lev,:,:], levels = levels, cmap='jet', vmin=vmin, vmax =vmax)
     #cs = m.quiver(x, y, vu[0,:,:], vv[0,:,:], color='Teal', angles='xy', scale=100, headlength=7)
-    plt.colorbar(cs, orientation='vertical', label=unit)
+    plt.colorbar(cs, orientation='horizontal', label=unit, pad=0.05, aspect=50)
     title = "MONAN - {0} at level {1} hPa for {2}".format(tit1,tit2,newdate)
     plt.title(title)
     date_out = newdate.strftime("%Y%m%d%H")
@@ -88,10 +104,10 @@ def plotWindInFixLev(step,m,minv,maxv,levels,varu,varv,unit,tit1,tit2,newdate,fi
     speed = np.sqrt(varu[step,:,:]**2 + varv[step,:,:]**2)
     vmin=minv
     vmax=maxv
-
+    levels = get_new_levels(levels, vmin, vmax)
     cs = m.contourf(x, y, speed[:,:], levels = levels, cmap='jet', vmin=vmin, vmax =vmax)
     #cs = m.quiver(x, y, vu[0,:,:], vv[0,:,:], color='Teal', angles='xy', scale=100, headlength=7)
-    plt.colorbar(cs, orientation='vertical', label=unit)
+    plt.colorbar(cs, orientation='horizontal', label=unit, pad=0.05, aspect=50)    
     title = "MONAN - {0} at level {1} for {2}".format(tit1,tit2,newdate)
     plt.title(title)
     date_out = newdate.strftime("%Y%m%d%H")
@@ -108,10 +124,10 @@ def plotWindInLev(lev,step,m,minv,maxv,levels,varu,varv,unit,tit1,tit2,newdate,f
     speed = np.sqrt(varu[step,lev,:,:]**2 + varv[step,lev,:,:]**2)
     vmin=minv
     vmax=maxv
-
+    levels = get_new_levels(levels, vmin, vmax)
     cs = m.contourf(x, y, speed[:,:], levels = levels, cmap='jet', vmin=vmin, vmax =vmax)
     #cs = m.quiver(x, y, vu[0,:,:], vv[0,:,:], color='Teal', angles='xy', scale=100, headlength=7)
-    plt.colorbar(cs, orientation='vertical', label=unit)
+    plt.colorbar(cs, orientation='horizontal', label=unit, pad=0.05, aspect=50)
     title = "MONAN - {0} at level {1} hPa for {2}".format(tit1,tit2,newdate)
     plt.title(title)
     date_out = newdate.strftime("%Y%m%d%H")
@@ -198,6 +214,30 @@ levs_valid = [100.0,200.0,500.0,850.0,1000.0]
 
 start_time = time.time()
 
+surf_press_percent = surface_pressure/100.0
+surf_press_percent_min = surf_press_percent.min()
+surf_press_percent_max = surf_press_percent.max()
+
+t2m_celsius = t2m-273.15
+t2m_celsius_min = t2m_celsius.min()
+t2m_celsius_max = t2m_celsius.max()
+
+temperature_celsius = temperature-273.15
+temperature_celsius_min = temperature_celsius.min()
+temperature_celsius_max = temperature_celsius.max()
+
+rainnc_min = rainnc.min()
+rainnc_max = rainnc.max()
+
+wind10m_min = min(u10.min(), v10.min())
+wind10_max = max(u10.max(), v10.max())
+
+wind_min = min(uzonal.min(), umeridional.min())
+wind_max = max(uzonal.max(), umeridional.max())
+
+relhum_min = relhum.min()
+relhum_max = relhum.max()
+
 #Walk in steps
 for step in range(nsteps):
     # The newdate is the initial date and hour plus time advance
@@ -208,13 +248,13 @@ for step in range(nsteps):
     print("Doing ... ",steph,":",date_out,"=====================================================")
     #Create the figures os each variable in fix levels
     print("Temp at 2 m      ...")
-    plotInFixLev(steph,m,-60,50,[-60,-50,-40,-30,-20,-10,-5,0,5,10,15,20,25,30,35,40,45,50],t2m-273.15,"[C]","Temp.","2m",newdate,"t2m",output_dir,prefix,date_in,sufix)
+    plotInFixLev(steph,m,t2m_celsius_min,t2m_celsius_max,[-60,-50,-40,-30,-20,-10,-5,0,5,10,15,20,25,30,35,40,45,50],t2m_celsius,"[C]","Temp.","2m",newdate,"t2m",output_dir,prefix,date_in,sufix)
     print("Surface Pressure ...")
-    plotInFixLev(steph,m,860,1040,np.linspace(860,1040,16),surface_pressure/100.0,"hPa","Surf. Pressure.","",newdate,"surface_pressure",output_dir,prefix,date_in,sufix)
+    plotInFixLev(steph,m,surf_press_percent_min,surf_press_percent_max,np.linspace(860,1040,16),surf_press_percent,"hPa","Surf. Pressure.","",newdate,"surface_pressure",output_dir,prefix,date_in,sufix)
     print("Accumulated rain ...")
-    plotInFixLev(steph,m,0,200,[0,0.5,1.0,2.0,5.0,10.0,15.0,20.,30.,40.,50.,60.0,75.,100.0,150.,200.],rainnc,"mm","Precip.","surf.",newdate,"precip",output_dir,prefix,date_in,sufix)
+    plotInFixLev(steph,m,rainnc_min,rainnc_max,[0,0.5,1.0,2.0,5.0,10.0,15.0,20.,30.,40.,50.,60.0,75.,100.0,150.,200.],rainnc,"mm","Precip.","surf.",newdate,"precip",output_dir,prefix,date_in,sufix)
     print("Wind at 10m")
-    plotWindInFixLev(steph,m,0,40,[0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,40],u10,v10,"m/s","Wind","10m",newdate,"wind10m",output_dir,prefix,date_in,sufix)
+    plotWindInFixLev(steph,m,wind10m_min,wind10_max,[0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,40],u10,v10,"m/s","Wind","10m",newdate,"wind10m",output_dir,prefix,date_in,sufix)
 
     #Create the figures os each variable in pressure levels
     for nlev in range(len(levs)):
@@ -225,13 +265,13 @@ for step in range(nsteps):
         lev_name = "{0}".format(int(levs[nlev]))
         print("relhum      ...",levs[nlev])
         var_name = "relhum_{0}hPa".format(int(levs[nlev]))
-        plotInLev(nlev,steph,m,0,100,[0,10,20,30,40,50,60,70,80,90,100],relhum,"%","R.H.",lev_name,newdate,var_name,output_dir,prefix,date_in,sufix)
+        plotInLev(nlev,steph,m,relhum_min,relhum_max,[0,10,20,30,40,50,60,70,80,90,100],relhum,"%","R.H.",lev_name,newdate,var_name,output_dir,prefix,date_in,sufix)
         print("temperature ...",levs[nlev])
         var_name = "temperature_{0}hPa".format(int(levs[nlev]))
-        plotInLev(nlev,steph,m,-80,50,[-80,-60,-50,-40,-30,-20,-10,-5,0,5,10,15,20,25,30,35,40,45,50],temperature-273.15,"C","Temp.",lev_name,newdate,var_name,output_dir,prefix,date_in,sufix)
+        plotInLev(nlev,steph,m,temperature_celsius_min,temperature_celsius_max,[-80,-60,-50,-40,-30,-20,-10,-5,0,5,10,15,20,25,30,35,40,45,50],temperature_celsius,"C","Temp.",lev_name,newdate,var_name,output_dir,prefix,date_in,sufix)
         print("wind        ...",levs[nlev])
         var_name = "wind_{0}hPa".format(int(levs[nlev]))
-        plotWindInLev(nlev,steph,m,0,60,[0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,40,50,60],umeridional,uzonal,"m/s","Wind",lev_name,newdate,var_name,output_dir,prefix,date_in,sufix)
+        plotWindInLev(nlev,steph,m,wind_min,wind_max,[0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,40,50,60],umeridional,uzonal,"m/s","Wind",lev_name,newdate,var_name,output_dir,prefix,date_in,sufix)
         
 print("========================================")
 end_time = time.time()
