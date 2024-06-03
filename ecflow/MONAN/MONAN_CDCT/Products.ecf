@@ -114,7 +114,7 @@ export I_MPI_DEBUG=5
 # 
 #
 # just for testing in my count on branch while desenv:
-#python ${SCRIPTS}/gera_figs.py --datein ${YYYYMMDDHHi} --suffix .00.00.x${RES}L55 --outdir %ECF_HOME%/%SUITE%/%FAMILY%/Products/dataout --prefix MONAN_DIAG_G_POS_${EXP}_  --mxhour ${FCST}
+python ${SCRIPTS}/gera_figs.py --datein ${YYYYMMDDHHi} --suffix .00.00.x${RES}L55 --outdir %ECF_HOME%/%SUITE%/%FAMILY%/Products/dataout --prefix MONAN_DIAG_G_POS_${EXP}_  --mxhour ${FCST}
 EOSH
 
 ecflow_client --label=Info "Submit the products script "
