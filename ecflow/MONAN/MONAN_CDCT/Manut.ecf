@@ -8,7 +8,11 @@ EXP=%EXP%
 RES=%RES%
 YYYYMMDDHHi=%YYYY%%MM%%DD%00
 FCST=%FCSTH%
-DIRFIGURES=/mnt/beegfs/monan/scripts_CD-CT/dataout/${YYYYMMDDHHi}/figures
+#-------------------------------------------------------
+
+# Local variables:-------------------------------------
+# da conta monan:
+DIRFIGURES=%ECF_HOME%/%SUITE%/%FAMILY%/Products/dataout/${YYYYMMDDHHi}/figures
 DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
 #-------------------------------------------------------
 
@@ -16,8 +20,7 @@ DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
 
 # Veriffy all products generated and move them to ftp area
 ecflow_client --label=Info "Copying all pngs generated to ftp area. "
-echo "cp -f ${DIRFIGURES}/*png ${DIRFTP}/"
-sleep 5
+cp -f ${DIRFIGURES}/*png ${DIRFTP}/
 
 
 
