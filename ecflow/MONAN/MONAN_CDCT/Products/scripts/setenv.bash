@@ -27,8 +27,8 @@ source .venv/bin/activate
 
 # MONAN-suite install root directories:
 # Put your directories:
-export DIR_PRODUCTS=/mnt/beegfs/monan/i522-MONAN-WorkFlow/MONAN-WorkFlow
-export DIR_PRODUCTD=/mnt/beegfs/monan/i522-MONAN-WorkFlow/MONAN-WorkFlow
+export DIR_PRODUCTS=/mnt/beegfs/monan/MONAN-WorkFlow
+export DIR_PRODUCTD=/mnt/beegfs/monan/MONAN-WorkFlow
 
 
 # Submiting variables:
