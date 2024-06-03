@@ -8,7 +8,11 @@ EXP=%EXP%
 RES=%RES%
 YYYYMMDDHHi=%YYYY%%MM%%DD%00
 FCST=%FCSTH%
-DIRFIGURES=/mnt/beegfs/monan/scripts_CD-CT/dataout/${YYYYMMDDHHi}/figures
+#-------------------------------------------------------
+
+# Local variables:-------------------------------------
+# da conta monan:
+DIRFIGURES=%ECF_HOME%/%SUITE%/%FAMILY%/Products/dataout/${YYYYMMDDHHi}/figures
 DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
 #-------------------------------------------------------
 

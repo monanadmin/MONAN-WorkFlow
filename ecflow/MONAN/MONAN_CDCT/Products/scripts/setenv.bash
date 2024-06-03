@@ -20,14 +20,15 @@ module load ecflow/5.8.4
 module list
 
 set +e
-unalias python
+#unalias python
 set -e
+echo "sentev >>> $(pwd)"
 source .venv/bin/activate
 
 # MONAN-suite install root directories:
 # Put your directories:
-export DIR_PRODUCTS=$(dirname $(dirname $(pwd)))
-export DIR_PRODUCTD=$(dirname $(dirname $(pwd)))
+export DIR_PRODUCTS=/mnt/beegfs/monan/i522-MONAN-WorkFlow/MONAN-WorkFlow
+export DIR_PRODUCTD=/mnt/beegfs/monan/i522-MONAN-WorkFlow/MONAN-WorkFlow
 
 
 # Submiting variables:
