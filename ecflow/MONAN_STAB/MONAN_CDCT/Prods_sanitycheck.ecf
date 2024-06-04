@@ -1,0 +1,62 @@
+%include <head.h>
+      
+#-----------------------------------------------------------------------------#
+# !SCRIPT: run_poducts
+#
+# !DESCRIPTION:
+#     Script to run the products of pos-processing of MONAN model .
+#     
+#-----------------------------------------------------------------------------#
+
+
+# Standart directories variables:---------------------------------------
+DIRHOMES=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMES}  
+DIRHOMED=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMED}  
+SCRIPTS=${DIRHOMES}/scripts;                                      mkdir -p ${SCRIPTS}
+#DATAIN=${DIRHOMED}/datain;                                        #mkdir -p ${DATAIN}
+#DATAOUT=${DIRHOMED}/dataout;                                      #mkdir -p ${DATAOUT}
+#SOURCES=${DIRHOMES}/sources;                                      #mkdir -p ${SOURCES}
+#EXECS=${DIRHOMED}/execs;                                          #mkdir -p ${EXECS}
+#----------------------------------------------------------------------
+
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYY%%MM%%DD%00
+FCST=%FCSTH%
+#-------------------------------------------------------
+
+ecflow_client --label=Info "Running  5.run_products.bash"
+# Run the 5.run_products.bash script from MONAN-Products repo:----------
+cd ${SCRIPTS}
+${SCRIPTS}/5.run_products.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+#-------------------------------------------------------
+
+
+
+# Veriffy all products generated
+#prods_generated=("t2m")
+#ipng=1
+#while [ ${ipng} -le ${FCST} ]
+#do
+#   yyyymmddhhf=$(date -u +"%%Y%%m%%d%%H -d "${YYYYMMDDHHi} 00:00 ${ipng} hours")
+#  for file in "${prods_generated[@]}_MONAN_DIAG_G_POS_${EXP}_${YYYYMMDDHHi}_${yyyymmddhhf}.00.00.x${RES}L55.png"
+#  do
+#      echo $i
+#     if [ ! -s "${file}" ]
+#     then
+#        echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"	  
+#        echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
+#        exit -1
+#     fi
+#  done
+#   ipng=$((ipng+1))
+#done
+
+
+
+
+
+%include <tail.h>
+# file is served by ecflow-server

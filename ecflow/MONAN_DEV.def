@@ -1,0 +1,9 @@
+suite MONAN_DEV
+
+   edit ECF_HOME "/mnt/beegfs/monan/i523-MONAN-WorkFlow/MONAN-WorkFlow/ecflow"
+   edit ECF_HOST "egeon-login1.cptec.inpe.br"
+   edit ECF_INCLUDE "/mnt/beegfs/monan/i523-MONAN-WorkFlow/MONAN-WorkFlow/ecflow/includes"
+   edit ECF_TRIES "1"
+
+   
+endsuite
