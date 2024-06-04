@@ -1,0 +1,24 @@
+suite MONAN_STAB
+
+   edit ECF_HOME "/mnt/beegfs/carlos.souza/repo_Monan/i523-MONAN-Products_E_MONAN-WorkFlow/MONAN-WorkFlow/ecflow"
+   edit ECF_HOST "egeon-login1.cptec.inpe.br"
+   edit ECF_INCLUDE "/mnt/beegfs/carlos.souza/repo_Monan/i523-MONAN-Products_E_MONAN-WorkFlow/MONAN-WorkFlow/ecflow/includes"
+   edit ECF_TRIES "1"
+
+   
+   family MONAN_CDCT
+      cron 13:00 15:00
+
+      edit EXP "GFS"
+      edit RES "1024002"
+      edit FCSTH "240"
+
+      task Prods_sanitycheck
+         label Info "Tarefa que executa o script 5.run_prods.bash de MONAN-Products."
+
+      task Manut
+         trigger /MONAN_STAB/MONAN_CDCT/Prods_sanitycheck eq complete
+         edit NDAYSKEEP 180
+         label Info "Tarefa que faz a copia das figuras geradas pelo Prods_sanitycheck para area de FTP."
+   endfamily
+endsuite
