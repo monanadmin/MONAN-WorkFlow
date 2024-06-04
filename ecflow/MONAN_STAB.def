@@ -7,7 +7,8 @@ suite MONAN_STAB
 
    
    family MONAN_CDCT
-      cron 13:00 15:00
+      cron 13:00 
+      cron 15:00
 
       edit EXP "GFS"
       edit RES "1024002"
