@@ -36,15 +36,22 @@ ${SCRIPTS}/5.run_products.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
 
 
 # Veriffy all products generated
-#prods_generated=("")
-#for file in "${prods_generated[@]}"
+#prods_generated=("t2m")
+#ipng=1
+#while [ ${ipng} -le ${FCST} ]
 #do
-#  if [ ! -s "${file}" ]
-#  then
-#    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"	  
-#    echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
-#    exit -1
-#  fi
+#   yyyymmddhhf=$(date -u +"%%Y%%m%%d%%H -d "${YYYYMMDDHHi} 00:00 ${ipng} hours")
+#  for file in "${prods_generated[@]}_MONAN_DIAG_G_POS_${EXP}_${YYYYMMDDHHi}_${yyyymmddhhf}.00.00.x${RES}L55.png"
+#  do
+#      echo $i
+#     if [ ! -s "${file}" ]
+#     then
+#        echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"	  
+#        echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
+#        exit -1
+#     fi
+#  done
+#   ipng=$((ipng+1))
 #done
 
 
