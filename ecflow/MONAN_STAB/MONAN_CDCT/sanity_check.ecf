@@ -30,7 +30,8 @@ FCST=%FCSTH%
 ecflow_client --label=Info "Running  5.run_products.bash"
 # Run the 5.run_products.bash script from MONAN-Products repo:----------
 cd ${SCRIPTS}
-${SCRIPTS}/5.run_products.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+echo "${SCRIPTS}/5.run_products.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}"
+sleep 5
 #-------------------------------------------------------
 
 

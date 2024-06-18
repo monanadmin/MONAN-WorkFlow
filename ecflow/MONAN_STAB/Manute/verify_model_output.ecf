@@ -1,0 +1,56 @@
+%include <head.h>
+      
+#-----------------------------------------------------------------------------#
+# !SCRIPT: run_poducts
+#
+# !DESCRIPTION:
+#     Script to run the products of pos-processing of MONAN model .
+#     
+#-----------------------------------------------------------------------------#
+
+
+# Standart directories variables:---------------------------------------
+DIRHOMES=%ECF_HOME%/%SUITE%/%FAMILY%/%TASK%;   mkdir -p ${DIRHOMES}  
+DIRHOMED=%ECF_HOME%/%SUITE%/%FAMILY%/%TASK%;   mkdir -p ${DIRHOMED}  
+#SCRIPTS=${DIRHOMES}/scripts;                   mkdir -p ${SCRIPTS}
+DATAIN=${DIRHOMED}/datain;                                        mkdir -p ${DATAIN}
+#DATAOUT=${DIRHOMED}/dataout;                                      #mkdir -p ${DATAOUT}
+#SOURCES=${DIRHOMES}/sources;                                      #mkdir -p ${SOURCES}
+#EXECS=${DIRHOMED}/execs;                                          #mkdir -p ${EXECS}
+#----------------------------------------------------------------------
+
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYY%%MM%%DD%00
+FCST=%FCSTH%
+#-------------------------------------------------------
+
+
+# Local variables--------------------------------------
+DIR_SCRIPTS_CDCT_ESTABLE=/mnt/beegfs/monan/scripts_CD-CT
+#-------------------------------------------------------
+
+
+# Calculating final forecast date 
+hh=${YYYYMMDDHHi:8:2}
+YYYYMMDDHHf=$(date -u +"%%Y%%m%%d%%H" -d "${YYYYMMDDHHi:0:8} ${hh}:00 ${FCST} hours" )
+
+ecflow_client --requeue=/MONAN_STAB/MONAN_CDCT
+
+                        
+if [ ! -s ${DATAIN}/done_${YYYYMMDDHHi}.txt ]
+then
+   if [ -s ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Model/MONAN_DIAG_G_MOD_${EXP}_${YYYYMMDDHHi}_${YYYYMMDDHHf}.00.00.x${RES}L55.nc ]
+   then
+      echo "ok ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Model/MONAN_DIAG_G_MOD_${EXP}_${YYYYMMDDHHi}_${YYYYMMDDHHf}.00.00.x${RES}L55.nc" > ${DATAIN}/done_${YYYYMMDDHHi}.txt
+      ecflow_client --event a 
+      sleep 5
+   fi
+fi
+
+
+
+%include <tail.h>
+# file is served by ecflow-server
