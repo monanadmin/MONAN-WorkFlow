@@ -37,17 +37,17 @@ DIR_SCRIPTS_CDCT_ESTABLE=/mnt/beegfs/monan/scripts_CD-CT
 hh=${YYYYMMDDHHi:8:2}
 YYYYMMDDHHf=$(date -u +"%%Y%%m%%d%%H" -d "${YYYYMMDDHHi:0:8} ${hh}:00 ${FCST} hours" )
 
+ecflow_client --requeue=/MONAN_STAB/MONAN_CDCT
 
+                        
 if [ ! -s ${DATAIN}/done_${YYYYMMDDHHi}.txt ]
 then
-   while true
-   do
-      if [ -s ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Model/MONAN_DIAG_G_MOD_${EXP}_${YYYYMMDDHHi}_${YYYYMMDDHHf}.00.00.x${RES}L55.nc ]
-      then
-         echo "ok ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Model/MONAN_DIAG_G_MOD_${EXP}_${YYYYMMDDHHi}_${YYYYMMDDHHf}.00.00.x${RES}L55.nc" > ${DATAIN}/done_${YYYYMMDDHHi}.txt
-         break;
-      fi
-   done
+   if [ -s ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Model/MONAN_DIAG_G_MOD_${EXP}_${YYYYMMDDHHi}_${YYYYMMDDHHf}.00.00.x${RES}L55.nc ]
+   then
+      echo "ok ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Model/MONAN_DIAG_G_MOD_${EXP}_${YYYYMMDDHHi}_${YYYYMMDDHHf}.00.00.x${RES}L55.nc" > ${DATAIN}/done_${YYYYMMDDHHi}.txt
+      ecflow_client --event a 
+      sleep 5
+   fi
 fi
 
 
