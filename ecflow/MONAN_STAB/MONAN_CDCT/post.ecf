@@ -28,8 +28,18 @@ FCST=%FCSTH%
 #-------------------------------------------------------
 
 
+# Local variables:--------------------------------------
+DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT
+#-------------------------------------------------------
 
-sleep 5
+
+
+
+ecflow_client --label=Info "Running  4.run_model.bash"
+# Run the 4.run_model.bash script from scripts_CDCT oficial repo:----------
+cd ${DIRSCRIPTSCDCT}/scripts
+${DIRSCRIPTSCDCT}/scripts/4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+#-------------------------------------------------------
 
 
 
