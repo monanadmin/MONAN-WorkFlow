@@ -1,8 +1,8 @@
-suite MONAN_STAB_i540
+suite MONAN_STAB
 
-   edit ECF_HOME "/mnt/beegfs/monan/i540-MONAN-Workflow/MONAN-WorkFlow/ecflow"
+   edit ECF_HOME "/mnt/beegfs/monan/MONAN-WorkFlow/ecflow"
    edit ECF_HOST "egeon-login1.cptec.inpe.br"
-   edit ECF_INCLUDE "/mnt/beegfs/monan/i540-MONAN-Workflow/MONAN-WorkFlow/ecflow/includes"
+   edit ECF_INCLUDE "/mnt/beegfs/monan/MONAN-WorkFlow/ecflow/includes"
    edit ECF_TRIES "1"
 
    edit EXP "GFS"
@@ -25,11 +25,11 @@ suite MONAN_STAB_i540
    family MONAN_CDCT
    
       task model
-         trigger /MONAN_STAB_i540/Verify/verify_model_output:a
+         trigger /MONAN_STAB/Verify/verify_model_output:a
          label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
          
       task post
-         trigger  /MONAN_STAB_i540/MONAN_CDCT/model eq complete
+         trigger  /MONAN_STABMONAN_CDCT/model eq complete
          label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
 
    endfamily
@@ -40,7 +40,7 @@ suite MONAN_STAB_i540
    
       task sanity_check
          label Info "Tarefa que executa o script 5.run_prods.bash de MONAN-Products."
-         trigger /MONAN_STAB_i540/MONAN_CDCT/post eq complete
+         trigger /MONAN_STAB/MONAN_CDCT/post eq complete
    
    endfamily
    
@@ -49,11 +49,11 @@ suite MONAN_STAB_i540
    family Manute
    
       task copy2ftp
-         trigger /MONAN_STAB_i540/Products/sanity_check eq complete
+         trigger /MONAN_STAB/Products/sanity_check eq complete
          label Info "Tarefa que faz a copia das figuras geradas pelo sanitycheck para area de FTP."
    
       task remove_trash
-         trigger /MONAN_STAB_i540/Manute/copy2ftp eq complete
+         trigger /MONAN_STAB/Manute/copy2ftp eq complete
          edit N_DAYS_KEEP_PNG "7"
          label Info "Tarefa que remove arquivos velhos do disco, move do beegfs para local destino.
    

@@ -43,9 +43,9 @@ if [ ! -s ${DATAIN}/done_${YYYYMMDDHHi}.txt ]
 then
    if [ -s ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Pre/x1.${RES}.init.nc ]
    then
-      ecflow_client --requeue=/MONAN_STAB_i540/MONAN_CDCT
-      ecflow_client --requeue=/MONAN_STAB_i540/Products
-      ecflow_client --requeue=/MONAN_STAB_i540/Manute
+      ecflow_client --requeue=/MONAN_STAB/MONAN_CDCT
+      ecflow_client --requeue=/MONAN_STAB/Products
+      ecflow_client --requeue=/MONAN_STAB/Manute
       sleep 5
       echo "ok ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Pre/x1.${RES}.init.nc" > ${DATAIN}/done_${YYYYMMDDHHi}.txt
       ecflow_client --event a 
