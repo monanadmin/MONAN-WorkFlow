@@ -1,0 +1,1 @@
+ok /mnt/beegfs/monan/scripts_CD-CT/dataout/2024062400/Pre/x1.1024002.init.nc

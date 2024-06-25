@@ -41,11 +41,13 @@ YYYYMMDDHHf=$(date -u +"%%Y%%m%%d%%H" -d "${YYYYMMDDHHi:0:8} ${hh}:00 ${FCST} ho
                         
 if [ ! -s ${DATAIN}/done_${YYYYMMDDHHi}.txt ]
 then
-   if [ -s ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Model/MONAN_DIAG_G_MOD_${EXP}_${YYYYMMDDHHi}_${YYYYMMDDHHf}.00.00.x${RES}L55.nc ]
+   if [ -s ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Pre/x1.${RES}.init.nc ]
    then
-      ecflow_client --requeue=/MONAN_STAB/MONAN_CDCT
+      ecflow_client --requeue=/MONAN_STAB_i540/MONAN_CDCT
+      ecflow_client --requeue=/MONAN_STAB_i540/Products
+      ecflow_client --requeue=/MONAN_STAB_i540/Manute
       sleep 5
-      echo "ok ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Model/MONAN_DIAG_G_MOD_${EXP}_${YYYYMMDDHHi}_${YYYYMMDDHHf}.00.00.x${RES}L55.nc" > ${DATAIN}/done_${YYYYMMDDHHi}.txt
+      echo "ok ${DIR_SCRIPTS_CDCT_ESTABLE}/dataout/${YYYYMMDDHHi}/Pre/x1.${RES}.init.nc" > ${DATAIN}/done_${YYYYMMDDHHi}.txt
       ecflow_client --event a 
       sleep 5
    fi
