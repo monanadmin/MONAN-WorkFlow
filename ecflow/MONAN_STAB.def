@@ -8,31 +8,55 @@ suite MONAN_STAB
    edit EXP "GFS"
    edit RES "1024002"
    edit FCSTH "240"
+   
+   
 
-   family Manute
+   family Verify
       cron 05:00 15:00 00:15
 
       task verify_model_output
-         label Info "Tarefa que verifica quando a etapa 3 do scripts_CD-CT esta completa para iniciar as etapas seguintes.
+         label Info "Tarefa que verifica quando a etapa 2 do scripts_CD-CT esta completa para iniciar as etapas seguintes.
          event a
 
    endfamily
+   
+   
 
    family MONAN_CDCT
+   
+      task model
+         trigger /MONAN_STAB/Verify/verify_model_output:a
+         label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
          
       task post
-         trigger /MONAN_STAB/Manute/verify_model_output:a
+         trigger  /MONAN_STABMONAN_CDCT/model eq complete
          label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
 
+   endfamily
+   
+   
+   
+   family Products
+   
       task sanity_check
          label Info "Tarefa que executa o script 5.run_prods.bash de MONAN-Products."
          trigger /MONAN_STAB/MONAN_CDCT/post eq complete
-
+   
+   endfamily
+   
+   
+   
+   family Manute
+   
       task copy2ftp
-         trigger /MONAN_STAB/MONAN_CDCT/sanity_check eq complete
-         edit NDAYSKEEP 180
+         trigger /MONAN_STAB/Products/sanity_check eq complete
          label Info "Tarefa que faz a copia das figuras geradas pelo sanitycheck para area de FTP."
-
+   
+      task remove_trash
+         trigger /MONAN_STAB/Manute/copy2ftp eq complete
+         edit N_DAYS_KEEP_PNG "7"
+         label Info "Tarefa que remove arquivos velhos do disco, move do beegfs para local destino.
+   
    endfamily
    
 endsuite
