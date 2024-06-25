@@ -12,6 +12,7 @@ FCST=%FCSTH%
 
 # Local variables:-------------------------------------
 N_DAYS_KEEP_PNG=%N_DAYS_KEEP_PNG%
+
 hh=${YYYYMMDDHHi:8:2}
 DIRFIGURES=%ECF_HOME%/%SUITE%/Products/MONAN-Products/dataout #/${YYYYMMDDHHi}/figures
 DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
@@ -20,6 +21,8 @@ DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
 
 YYYYMMDDHH_rm=$(date -u +"%%Y%%m%%d%%H" -d "${YYYYMMDDHHi:0:8} ${hh}:00 ${N_DAYS_KEEP_PNG} days ago" )
 
+
+echo "rm -fr ${DIRFIGURES}/${YYYYMMDDHH_rm}"
 
 sleep 5
 
