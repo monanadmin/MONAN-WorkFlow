@@ -3,3 +3,6 @@
 done*txt
 *check
 *log
+*usr
+.venv
+MONAN-Products
