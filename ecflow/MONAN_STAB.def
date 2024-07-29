@@ -11,26 +11,30 @@ suite MONAN_STAB
    
    
 
-   family Verify
-      cron 04:00 20:00 00:15
+#   family Verify
 
-      task verify_model_output
-         label Info "Tarefa que verifica quando a etapa 2 do scripts_CD-CT esta completa para iniciar as etapas seguintes.
-         event a
+#      task verify_model_output
+#         label Info "Tarefa que verifica quando a etapa 2 do scripts_CD-CT esta completa para iniciar as etapas seguintes."
+#         event a
 
-   endfamily
+#   endfamily
    
    
 
    family MONAN_CDCT
+      cron 09:00
+
+      task pre
+         label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
    
       task model
-         trigger /MONAN_STAB/Verify/verify_model_output:a
+         trigger /MONAN_STAB/MONAN_CDCT/pre eq complete
          label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
          
       task post
          trigger  /MONAN_STAB/MONAN_CDCT/model eq complete
          label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
+         event MONAN_CDCT_complete
 
    endfamily
    
@@ -40,11 +44,11 @@ suite MONAN_STAB
    
       task sanity_check
          label Info "Tarefa que executa o script 5.run_prods.bash de MONAN-Products."
-         trigger /MONAN_STAB/MONAN_CDCT/post eq complete
+         trigger /MONAN_STAB/MONAN_CDCT/post:MONAN_CDCT_complete
 
-      task compare_dev_stable
-         label Info "Tarefa que executa o script 6.run_compare_dev_stable.bash do MONAN-Products."
-         trigger /MONAN_STAB/MONAN_CDCT/post eq complete
+#      task compare_dev_stable
+#         label Info "Tarefa que executa o script 6.run_compare_dev_stable.bash do MONAN-Products."
+#         trigger /MONAN_STAB/MONAN_CDCT/post eq complete
    
    endfamily
    

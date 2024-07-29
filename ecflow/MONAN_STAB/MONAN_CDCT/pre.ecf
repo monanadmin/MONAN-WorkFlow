@@ -1,10 +1,10 @@
 %include <head.h>
       
 #-----------------------------------------------------------------------------#
-# !SCRIPT: run_poducts
+# !SCRIPT: run_pre
 #
 # !DESCRIPTION:
-#     Script to run the products of pos-processing of MONAN model .
+#     Script to run the pre of MONAN model .
 #     
 #-----------------------------------------------------------------------------#
 
@@ -32,20 +32,21 @@ FCST=%FCSTH%
 DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT
 #-------------------------------------------------------
 
+ecflow_client --requeue=/MONAN_STAB/Products
+ecflow_client --requeue=/MONAN_STAB/Manute
 
 
 
-ecflow_client --label=Info "Running  4.run_model.bash"
-# Run the 4.run_model.bash script from scripts_CDCT oficial repo:----------
+ecflow_client --label=Info "Running  2.pre_processing.bash"
+# Run the 2.pre_processing.bash script from scripts_CDCT oficial repo:----------
 cd ${DIRSCRIPTSCDCT}/scripts
-${DIRSCRIPTSCDCT}/scripts/4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+${DIRSCRIPTSCDCT}/scripts/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+
+
 #-------------------------------------------------------
 
 
 sleep 5
-ecflow_client --event MONAN_CDCT_complete 
-sleep 5
-
 
 %include <tail.h>
 # file is served by ecflow-server
