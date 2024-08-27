@@ -10,7 +10,7 @@ suite MONAN_STAB
    edit FCSTH "240"
    
    
-
+#CR: Do not remove this!
 #   family Verify
 
 #      task verify_model_output
@@ -34,37 +34,33 @@ suite MONAN_STAB
       task post
          trigger  /MONAN_STAB/MONAN_CDCT/model eq complete
          label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
-         event MONAN_CDCT_complete
 
-   endfamily
+      family Products
    
-   
-   
-   family Products
-   
-      task sanity_check
-         label Info "Tarefa que executa o script 5.run_prods.bash de MONAN-Products."
-         trigger /MONAN_STAB/MONAN_CDCT/post:MONAN_CDCT_complete
+         task sanity_check
+            label Info "Tarefa que executa o script 5.run_prods.bash de MONAN-Products."
+            trigger /MONAN_STAB/MONAN_CDCT/post eq complete
 
-#      task compare_dev_stable
-#         label Info "Tarefa que executa o script 6.run_compare_dev_stable.bash do MONAN-Products."
-#         trigger /MONAN_STAB/MONAN_CDCT/post eq complete
+#        task compare_dev_stable
+#           label Info "Tarefa que executa o script 6.run_compare_dev_stable.bash do MONAN-Products."
+#           trigger /MONAN_STAB/MONAN_CDCT/post eq complete
+      endfamily
+
+      family Manute
+
+         task copy2ftp
+            trigger /MONAN_STAB/MONAN_CDCT/Products/sanity_check eq complete
+            label Info "Tarefa que faz a copia das figuras geradas pelo sanitycheck para area de FTP."
    
-   endfamily
-   
-   
-   
-   family Manute
-   
-      task copy2ftp
-         trigger /MONAN_STAB/Products/sanity_check eq complete
-         label Info "Tarefa que faz a copia das figuras geradas pelo sanitycheck para area de FTP."
-   
-      task remove_trash
-         trigger /MONAN_STAB/Manute/copy2ftp eq complete
-         edit N_DAYS_KEEP_PNG "7"
-         label Info "Tarefa que remove arquivos velhos do disco, move do beegfs para local destino.
-   
+         task remove_trash
+            trigger /MONAN_STAB/MONAN_CDCT/Manute/copy2ftp eq complete
+            edit N_DAYS_KEEP_PRE "7"
+            edit N_DAYS_KEEP_MOD "7"
+            edit N_DAYS_KEEP_POS "7"
+            edit N_DAYS_KEEP_PNG "7"
+            label Info "Tarefa que remove arquivos velhos do disco, move do beegfs para local destino.
+      endfamily
+
    endfamily
    
 endsuite

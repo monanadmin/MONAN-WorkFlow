@@ -43,8 +43,6 @@ ${DIRSCRIPTSCDCT}/scripts/4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
 
 
 sleep 5
-ecflow_client --event MONAN_CDCT_complete 
-sleep 5
 
 
 %include <tail.h>

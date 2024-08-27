@@ -32,8 +32,9 @@ FCST=%FCSTH%
 DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT
 #-------------------------------------------------------
 
-ecflow_client --requeue=/MONAN_STAB/Products
-ecflow_client --requeue=/MONAN_STAB/Manute
+#CR: For now, please do not remove this yet:
+#ecflow_client --requeue=/MONAN_STAB/Products
+#ecflow_client --requeue=/MONAN_STAB/Manute
 
 
 
@@ -42,8 +43,10 @@ ecflow_client --label=Info "Running  2.pre_processing.bash"
 cd ${DIRSCRIPTSCDCT}/scripts
 ${DIRSCRIPTSCDCT}/scripts/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
 
-
 #-------------------------------------------------------
+
+
+
 
 
 sleep 5

@@ -12,7 +12,7 @@ FCST=%FCSTH%
 
 # Local variables:-------------------------------------
 # da conta monan:
-DIRFIGURES=%ECF_HOME%/%SUITE%/Products/MONAN-Products/dataout/${YYYYMMDDHHi}/figures
+DIRFIGURES=%ECF_HOME%/%SUITE%/MONAN_CDCT/Products/MONAN-Products/dataout/${YYYYMMDDHHi}/figures
 DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
 #-------------------------------------------------------
 
