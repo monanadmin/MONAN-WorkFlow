@@ -1,0 +1,85 @@
+%include <head.h>
+      
+
+ecflow_client --label=Info "Inicio... "
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYY%%MM%%DD%00
+FCST=%FCSTH%
+
+N_DAYS_KEEP_PRE=%N_DAYS_KEEP_PRE%
+N_DAYS_KEEP_MOD=%N_DAYS_KEEP_MOD%
+N_DAYS_KEEP_POS=%N_DAYS_KEEP_POS%
+N_DAYS_KEEP_PNG=%N_DAYS_KEEP_PNG%
+
+#-------------------------------------------------------
+
+# Local variables:-------------------------------------
+# da conta monan:
+DIRFIGURES=%ECF_HOME%/%SUITE%/MONAN_CDCT/Products/MONAN-Products/dataout/${YYYYMMDDHHi}/figures
+DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
+DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT
+DIRBEEGFSPOST=/mnt/beegfs/monan/tc
+hh=${YYYYMMDDHHi:8:2}
+#-------------------------------------------------------
+
+
+
+
+
+
+
+
+# move all products generated to ftp area:-------------------------------------
+ecflow_client --label=Info "Copying all pngs generated to ftp area. "
+cp -f ${DIRFIGURES}/*png ${DIRFTP}/
+sleep 5
+#-------------------------------------------------------
+
+
+
+
+
+
+
+# move output post files to BEEGFS area:-------------------------------------
+ecflow_client --label=Info "Copying post files to BEEGFS area. "
+
+if [ ! -s ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/MONAN_DIAG_G_POS_GFS_2024090200.00.00.x1024002L55.nc ]
+then
+   echo "Post file was not generated. Check it!"
+   ecflow_client --label=Info "Post file was not generated. Check it!"
+   exit
+fi
+
+if [ ! -s ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/VERSION.txt ]
+then
+   echo "VERSION.txt file was not generated. Check it!"
+   ecflow_client --label=Info "VERSION.txt file was not generated. Check it!"
+   exit
+fi
+  
+monanversion=$(cat ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/VERSION.txt)
+mkdir -p ${DIRBEEGFSPOST}/${monanversion}/${YYYYMMDDHHi}/
+
+cp -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post ${DIRBEEGFSPOST}/${monanversion}/${YYYYMMDDHHi}/
+
+YYYYMMDDHH_POSrm=$(date -u +"%%Y%%m%%d%%H" -d "${YYYYMMDDHHi:0:8} ${hh}:00 ${N_DAYS_KEEP_POS} days ago" )
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHH_POSrm}/Post
+
+
+sleep 5
+#-------------------------------------------------------
+
+
+
+
+
+
+
+
+
+%include <tail.h>
+# file is served by ecflow-server

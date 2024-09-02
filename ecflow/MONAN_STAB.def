@@ -48,17 +48,14 @@ suite MONAN_STAB
 
       family Manute
 
-         task copy2ftp
+         task files_management
             trigger /MONAN_STAB/MONAN_CDCT/Products/sanity_check eq complete
-            label Info "Tarefa que faz a copia das figuras geradas pelo sanitycheck para area de FTP."
+            label Info "Tarefa que gerencia os arquivos gerados em disco."
    
-         task remove_trash
-            trigger /MONAN_STAB/MONAN_CDCT/Manute/copy2ftp eq complete
             edit N_DAYS_KEEP_PRE "7"
             edit N_DAYS_KEEP_MOD "7"
             edit N_DAYS_KEEP_POS "7"
             edit N_DAYS_KEEP_PNG "7"
-            label Info "Tarefa que remove arquivos velhos do disco, move do beegfs para local destino.
       endfamily
 
    endfamily
