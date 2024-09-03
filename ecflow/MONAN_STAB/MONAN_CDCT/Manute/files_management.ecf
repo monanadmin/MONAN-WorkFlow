@@ -47,7 +47,7 @@ sleep 5
 # move output post files to BEEGFS area:-------------------------------------
 ecflow_client --label=Info "Copying post files to BEEGFS area. "
 
-if [ ! -s ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/MONAN_DIAG_G_POS_GFS_2024090200.00.00.x1024002L55.nc ]
+if [ ! -s ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/MONAN_DIAG_G_POS_${EXP}_${YYYYMMDDHHi}.00.00.x${RES}L55.nc ]
 then
    echo "Post file was not generated. Check it!"
    ecflow_client --label=Info "Post file was not generated. Check it!"
