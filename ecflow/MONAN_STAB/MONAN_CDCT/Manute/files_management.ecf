@@ -18,7 +18,7 @@ N_DAYS_KEEP_PNG=%N_DAYS_KEEP_PNG%
 
 # Local variables:-------------------------------------
 # da conta monan:
-DIRFIGURES=%ECF_HOME%/%SUITE%/MONAN_CDCT/Products/MONAN-Products/dataout/${YYYYMMDDHHi}/figures
+DIRFIGURES=%ECF_HOME%/%SUITE%/MONAN_CDCT/Products/MONAN-Products/dataout
 DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
 DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT
 DIRBEEGFSPOST=/mnt/beegfs/monan/tc
@@ -32,11 +32,21 @@ hh=${YYYYMMDDHHi:8:2}
 
 
 
-# move all products generated to ftp area:-------------------------------------
+#=========================================================================================================
+# PRODUCTS
+#=========================================================================================================
+#
+# Move all products generated to ftp area:
 ecflow_client --label=Info "Copying all pngs generated to ftp area. "
-cp -f ${DIRFIGURES}/*png ${DIRFTP}/
+cp -f ${DIRFIGURES}/${YYYYMMDDHHi}/figures/*png ${DIRFTP}/
+
+
+# And remove them from the original output diretory:
+YYYYMMDDHH_PNGrm=$(date -u +"%%Y%%m%%d%%H" -d "${YYYYMMDDHHi:0:8} ${hh}:00 ${N_DAYS_KEEP_PNG} days ago" )
+rm -fr ${DIRFIGURES}/${YYYYMMDDHH_PNGrm}
+
 sleep 5
-#-------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
 
 
 
@@ -44,7 +54,14 @@ sleep 5
 
 
 
-# move output post files to BEEGFS area:-------------------------------------
+
+
+
+#=========================================================================================================
+# POST
+#=========================================================================================================
+#
+# Move output post files to BEEGFS area:
 ecflow_client --label=Info "Copying post files to BEEGFS area. "
 
 if [ ! -s ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/MONAN_DIAG_G_POS_${EXP}_${YYYYMMDDHHi}.00.00.x${RES}L55.nc ]
@@ -66,13 +83,35 @@ mkdir -p ${DIRBEEGFSPOST}/${monanversion}/${YYYYMMDDHHi}/
 
 cp -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post ${DIRBEEGFSPOST}/${monanversion}/${YYYYMMDDHHi}/
 
+
+# And remove them from the original output diretory:
 YYYYMMDDHH_POSrm=$(date -u +"%%Y%%m%%d%%H" -d "${YYYYMMDDHHi:0:8} ${hh}:00 ${N_DAYS_KEEP_POS} days ago" )
 rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHH_POSrm}/Post
 
 
 sleep 5
-#-------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
+#=========================================================================================================
+# MODEL
+#=========================================================================================================
+#
+# Remove MODEL output files from CDCT dataout directory after POST has been saved:
+
+YYYYMMDDHH_MODrm=$(date -u +"%%Y%%m%%d%%H" -d "${YYYYMMDDHHi:0:8} ${hh}:00 ${N_DAYS_KEEP_MOD} days ago" )
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHH_MODrm}/Model
+
+sleep 5
+#-----------------------------------------------------------------------------------------------------------
 
 
 
