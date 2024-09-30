@@ -1,4 +1,5 @@
 suite MONAN_STAB
+   defstatus suspended
 
    edit ECF_HOME "/mnt/beegfs/monan/MONAN-WorkFlow/ecflow"
    edit ECF_HOST "egeon-login1.cptec.inpe.br"
