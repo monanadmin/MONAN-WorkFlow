@@ -1,0 +1,95 @@
+suite MONAN_TESTCASES
+   defstatus suspended
+
+   edit ECF_HOME "/mnt/beegfs/monan/MONAN-WorkFlow/ecflow"
+   edit ECF_HOST "egeon-login1.cptec.inpe.br"
+   edit ECF_INCLUDE "/mnt/beegfs/monan/MONAN-WorkFlow/ecflow/includes"
+   edit ECF_TRIES "1"
+
+   edit EXP "GFS"
+   edit RES "1024002"
+   edit FCSTH "240"
+   
+   family GAM_TC
+   
+      family MONAN_P1
+         repeat date YYYYMMDDP 20240420 20240501 
+
+         task pre
+            label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
+            label date "YYYYMMDDHH"
+   
+          task model
+             trigger /MONAN_TESTCASES/GAM_TC/MONAN_P1/pre eq complete
+             label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+             
+          task post
+             trigger  /MONAN_TESTCASES/GAM_TC/MONAN_P1/model eq complete
+             label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+
+
+#          family Manute
+#    
+#             task files_management
+#                trigger /MONAN_TESTCASES/MONAN_P1/post eq complete
+#                label Info "Tarefa que gerencia os arquivos gerados em disco."
+#       
+#                edit N_DAYS_KEEP_PRE "7"
+#                edit N_DAYS_KEEP_MOD "7"
+#                edit N_DAYS_KEEP_POS "7"
+#                edit N_DAYS_KEEP_PNG "7"
+#          endfamily
+
+      endfamily
+
+
+      family MONAN_P2
+         trigger /MONAN_TESTCASES/GAM_TC/MONAN_P1 eq complete
+         repeat date YYYYMMDDP 20231222 20240130 
+
+         task pre
+            label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
+            label date "YYYYMMDDHH"
+
+          task model
+             trigger /MONAN_TESTCASES/GAM_TC/MONAN_P2/pre eq complete
+             label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+             
+          task post
+             trigger  /MONAN_TESTCASES/GAM_TC/MONAN_P2/model eq complete
+             label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+
+   
+      endfamily
+
+      family MONAN_P3
+         trigger /MONAN_TESTCASES/GAM_TC/MONAN_P2 eq complete
+         repeat date YYYYMMDDP 20240621 20240730 
+
+         task pre
+            label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
+            label date "YYYYMMDDHH"
+   
+          task model
+             trigger /MONAN_TESTCASES/GAM_TC/MONAN_P3/pre eq complete
+             label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+             
+          task post
+             trigger  /MONAN_TESTCASES/GAM_TC/MONAN_P3/model eq complete
+             label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+
+      endfamily
+      
+   endfamily
+
+
+
+
+   
+endsuite

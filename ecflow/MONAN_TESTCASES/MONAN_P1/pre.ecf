@@ -1,0 +1,56 @@
+%include <head.h>
+      
+#-----------------------------------------------------------------------------#
+# !SCRIPT: run_pre
+#
+# !DESCRIPTION:
+#     Script to run the pre of MONAN model .
+#     
+#-----------------------------------------------------------------------------#
+
+
+# Standart directories variables:---------------------------------------
+#DIRHOMES=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMES}  
+#DIRHOMED=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMED}  
+#SCRIPTS=${DIRHOMES}/scripts;                                      mkdir -p ${SCRIPTS}
+#DATAIN=${DIRHOMED}/datain;                                        #mkdir -p ${DATAIN}
+#DATAOUT=${DIRHOMED}/dataout;                                      #mkdir -p ${DATAOUT}
+#SOURCES=${DIRHOMES}/sources;                                      #mkdir -p ${SOURCES}
+#EXECS=${DIRHOMED}/execs;                                          #mkdir -p ${EXECS}
+#----------------------------------------------------------------------
+
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYYMMDDP%00
+FCST=%FCSTH%
+#-------------------------------------------------------
+ecflow_client --label=date "%YYYYMMDDP%"
+
+
+# Local variables:--------------------------------------
+DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT_TC
+#-------------------------------------------------------
+
+#CR: For now, please do not remove this yet:
+#ecflow_client --requeue=/MONAN_STAB/Products
+#ecflow_client --requeue=/MONAN_STAB/Manute
+
+
+
+ecflow_client --label=Info "Running  2.pre_processing.bash"
+# Run the 2.pre_processing.bash script from scripts_CDCT oficial repo:----------
+cd ${DIRSCRIPTSCDCT}/scripts
+${DIRSCRIPTSCDCT}/scripts/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+
+#-------------------------------------------------------
+
+
+
+
+
+sleep 5
+
+%include <tail.h>
+# file is served by ecflow-server
