@@ -1,0 +1,92 @@
+%include <head.h>
+      
+
+ecflow_client --label=Info "Inicio... "
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYY%%MM%%DD%00
+FCST=%FCSTH%
+#-------------------------------------------------------
+
+# Local variables:-------------------------------------
+# da conta monan:
+DIRFIGURES=%ECF_HOME%/%SUITE%/MONAN_CDCT/Products/MONAN-Products/dataout
+DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
+DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT_TC
+DIRBEEGFSPOST=/mnt/beegfs/monan/tc
+hh=${YYYYMMDDHHi:8:2}
+#-------------------------------------------------------
+
+
+
+
+
+
+
+#=========================================================================================================
+# POST
+#=========================================================================================================
+#
+# Move output post files to BEEGFS area:
+ecflow_client --label=Info "Copying post files to BEEGFS area. "
+
+if [ ! -s ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/MONAN_DIAG_G_POS_${EXP}_${YYYYMMDDHHi}.00.00.x${RES}L55.nc ]
+then
+   echo "Post file was not generated. Check it!"
+   ecflow_client --label=Info "Post file was not generated. Check it!"
+   exit
+fi
+
+if [ ! -s ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/VERSION.txt ]
+then
+   echo "VERSION.txt file was not generated. Check it!"
+   ecflow_client --label=Info "VERSION.txt file was not generated. Check it!"
+   exit
+fi
+  
+monanversion=$(cat ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/VERSION.txt)
+mkdir -p ${DIRBEEGFSPOST}/${monanversion}/%FAMILY1%/${YYYYMMDDHHi}/
+
+cp -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post ${DIRBEEGFSPOST}/${monanversion}/%FAMILY1%/${YYYYMMDDHHi}/
+
+
+# And remove them from the original output diretory:
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Model
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post
+
+
+sleep 5
+#-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+#=========================================================================================================
+# MODEL
+#=========================================================================================================
+#
+# Remove MODEL output files from CDCT dataout directory after POST has been saved:
+
+YYYYMMDDHH_MODrm=$(date -u +"%%Y%%m%%d%%H" -d "${YYYYMMDDHHi:0:8} ${hh}:00 ${N_DAYS_KEEP_MOD} days ago" )
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHH_MODrm}/Model
+
+sleep 5
+#-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+%include <tail.h>
+# file is served by ecflow-server
