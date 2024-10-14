@@ -50,7 +50,5 @@ ${DIRSCRIPTSCDCT}/scripts/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${F
 
 
 
-sleep 5
-
 %include <tail.h>
 # file is served by ecflow-server

@@ -25,6 +25,7 @@ EXP=%EXP%
 RES=%RES%
 YYYYMMDDHHi=%YYYYMMDDP%00
 FCST=%FCSTH%
+export FAMILY1=%FAMILY1%
 #-------------------------------------------------------
 ecflow_client --label=date "%YYYYMMDDP%"
 
@@ -42,8 +43,6 @@ cd ${DIRSCRIPTSCDCT}/scripts
 ${DIRSCRIPTSCDCT}/scripts/4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
 #-------------------------------------------------------
 
-
-sleep 5
 
 
 %include <tail.h>
