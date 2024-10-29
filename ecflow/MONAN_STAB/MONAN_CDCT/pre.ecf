@@ -30,6 +30,8 @@ FCST=%FCSTH%
 
 # Local variables:--------------------------------------
 DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT
+GCCCIS=/mnt/beegfs/monan/CIs/${EXP}
+BNDDIR=/oper/dados/ioper/tempo/${EXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
 #-------------------------------------------------------
 
 #CR: For now, please do not remove this yet:
@@ -46,6 +48,8 @@ ${DIRSCRIPTSCDCT}/scripts/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${F
 #-------------------------------------------------------
 
 
+
+cp -f ${BNDDIR}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ${GCCCIS}/${YYYYMMDDHHi:0:4}/
 
 
 

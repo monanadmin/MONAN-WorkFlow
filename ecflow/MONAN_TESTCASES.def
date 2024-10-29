@@ -37,7 +37,8 @@ suite MONAN_TESTCASES
 
 
       family P2
-         trigger /MONAN_TESTCASES/GAM_TC/P1 eq complete
+         defstatus suspended
+#         trigger /MONAN_TESTCASES/GAM_TC/P1 eq complete
          repeat date YYYYMMDDP 20231222 20240130 
 
          task pre
