@@ -31,6 +31,8 @@ ecflow_client --label=date "%YYYYMMDDP%"
 
 # Local variables:--------------------------------------
 DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT_TC
+GCCCIS=/mnt/beegfs/monan/CIs/${EXP}
+BNDDIR=/oper/dados/ioper/tempo/${EXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
 #-------------------------------------------------------
 
 #CR: For now, please do not remove this yet:
@@ -45,8 +47,6 @@ cd ${DIRSCRIPTSCDCT}/scripts
 ${DIRSCRIPTSCDCT}/scripts/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
 
 #-------------------------------------------------------
-
-
 
 
 

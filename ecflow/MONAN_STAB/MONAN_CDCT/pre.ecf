@@ -30,8 +30,9 @@ FCST=%FCSTH%
 
 # Local variables:--------------------------------------
 DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT
-GCCCIS=/mnt/beegfs/monan/CIs/${EXP}
+GCCCIS=/mnt/beegfs/monan/CIs
 BNDDIR=/oper/dados/ioper/tempo/${EXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
+start_date=${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}:00:00
 #-------------------------------------------------------
 
 #CR: For now, please do not remove this yet:
@@ -48,8 +49,17 @@ ${DIRSCRIPTSCDCT}/scripts/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${F
 #-------------------------------------------------------
 
 
+# Copia gfs.t00z.pgrb2.0p25.f000.*grib2 e GFS:* para /mnt/beegfs/monan/CIs/GFS
+mkdir -p ${GCCCIS}/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+cp -f ${BNDDIR}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ${GCCCIS}/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+cp -f ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Pre/GFS\:${start_date:0:13} ${GCCCIS}/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
 
-cp -f ${BNDDIR}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ${GCCCIS}/${YYYYMMDDHHi:0:4}/
+
+# Copia x1.${RES}.init.nc para /mnt/beegfs/monan/CIs/MONAN
+mkdir -p ${GCCCIS}/MONAN/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+cp -f ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Pre/x1.${RES}.init.nc ${GCCCIS}/MONAN/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Pre
+
 
 
 
