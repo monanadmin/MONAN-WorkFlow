@@ -1,9 +1,9 @@
 suite MONAN_TESTCASES
    defstatus suspended
 
-   edit ECF_HOME "/mnt/beegfs/monan/MONAN-WorkFlow/ecflow"
+   edit ECF_HOME "/mnt/beegfs/monan/STAB/MONAN-WorkFlow/ecflow"
    edit ECF_HOST "egeon-login1.cptec.inpe.br"
-   edit ECF_INCLUDE "/mnt/beegfs/monan/MONAN-WorkFlow/ecflow/includes"
+   edit ECF_INCLUDE "/mnt/beegfs/monan/STAB/MONAN-WorkFlow/ecflow/includes"
    edit ECF_TRIES "1"
 
    edit EXP "GFS"
@@ -18,20 +18,19 @@ suite MONAN_TESTCASES
          task pre
             label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
             label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
    
           task model
              trigger /MONAN_TESTCASES/GAM_TC/P1/pre eq complete
              label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
              label date "YYYYMMDDHH"
+             label VERSION "Version of model running."
              
           task post
              trigger  /MONAN_TESTCASES/GAM_TC/P1/model eq complete
              label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
              label date "YYYYMMDDHH"
-
-          task files_management
-             trigger /MONAN_TESTCASES/GAM_TC/P1/post eq complete
-             label Info "Tarefa que gerencia os arquivos gerados em disco."
+             label VERSION "Version of model running."
 
       endfamily
 
@@ -44,21 +43,20 @@ suite MONAN_TESTCASES
          task pre
             label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
             label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
 
           task model
              trigger /MONAN_TESTCASES/GAM_TC/P2/pre eq complete
              label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
              label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
              
           task post
              trigger  /MONAN_TESTCASES/GAM_TC/P2/model eq complete
              label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
              label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
 
-          task files_management
-             trigger /MONAN_TESTCASES/GAM_TC/P2/post eq complete
-             label Info "Tarefa que gerencia os arquivos gerados em disco."
-   
       endfamily
 
       family P3
@@ -68,21 +66,20 @@ suite MONAN_TESTCASES
          task pre
             label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
             label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
    
           task model
              trigger /MONAN_TESTCASES/GAM_TC/P3/pre eq complete
              label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
              label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
              
           task post
              trigger  /MONAN_TESTCASES/GAM_TC/P3/model eq complete
              label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
              label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
           
-          task files_management
-             trigger /MONAN_TESTCASES/GAM_TC/P3/post eq complete
-             label Info "Tarefa que gerencia os arquivos gerados em disco."
-
       endfamily
       
    endfamily
