@@ -1,9 +1,15 @@
 suite MONAN_DEV
+   defstatus suspended
 
    edit ECF_HOME "/mnt/beegfs/monan/DEV/MONAN-WorkFlow/ecflow"
    edit ECF_HOST "egeon-login1.cptec.inpe.br"
    edit ECF_INCLUDE "/mnt/beegfs/monan/DEV/MONAN-WorkFlow/ecflow/includes"
    edit ECF_TRIES "1"
+
+
+   family teste
+      cron 09:00
+   endfamily
 
    
 endsuite

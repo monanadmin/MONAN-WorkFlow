@@ -11,15 +11,6 @@ suite MONAN_STAB
    edit FCSTH "240"
    
    
-#CR: Do not remove this!
-#   family Verify
-
-#      task verify_model_output
-#         label Info "Tarefa que verifica quando a etapa 2 do scripts_CD-CT esta completa para iniciar as etapas seguintes."
-#         event a
-
-#   endfamily
-   
    
 
    family MONAN_CDCT
