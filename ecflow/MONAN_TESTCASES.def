@@ -1,0 +1,91 @@
+suite MONAN_TESTCASES
+   defstatus suspended
+
+   edit ECF_HOME "/mnt/beegfs/monan/STAB/MONAN-WorkFlow/ecflow"
+   edit ECF_HOST "egeon-login1.cptec.inpe.br"
+   edit ECF_INCLUDE "/mnt/beegfs/monan/STAB/MONAN-WorkFlow/ecflow/includes"
+   edit ECF_TRIES "1"
+
+   edit EXP "GFS"
+   edit RES "1024002"
+   edit FCSTH "240"
+   
+   family GAM_TC
+   
+      family P1
+         repeat date YYYYMMDDP 20240420 20240501 
+
+         task pre
+            label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
+            label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
+   
+          task model
+             trigger /MONAN_TESTCASES/GAM_TC/P1/pre eq complete
+             label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+             label VERSION "Version of model running."
+             
+          task post
+             trigger  /MONAN_TESTCASES/GAM_TC/P1/model eq complete
+             label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+             label VERSION "Version of model running."
+
+      endfamily
+
+
+      family P2
+         defstatus suspended
+#         trigger /MONAN_TESTCASES/GAM_TC/P1 eq complete
+         repeat date YYYYMMDDP 20231222 20240130 
+
+         task pre
+            label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
+            label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
+
+          task model
+             trigger /MONAN_TESTCASES/GAM_TC/P2/pre eq complete
+             label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
+             
+          task post
+             trigger  /MONAN_TESTCASES/GAM_TC/P2/model eq complete
+             label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
+
+      endfamily
+
+      family P3
+         trigger /MONAN_TESTCASES/GAM_TC/P2 eq complete
+         repeat date YYYYMMDDP 20240621 20240730 
+
+         task pre
+            label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
+            label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
+   
+          task model
+             trigger /MONAN_TESTCASES/GAM_TC/P3/pre eq complete
+             label Info "Tarefa que executa o script 3.run_model.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
+             
+          task post
+             trigger  /MONAN_TESTCASES/GAM_TC/P3/model eq complete
+             label Info "Tarefa que executa o script 4.run_post.bash de scripts_CD-CT."
+             label date "YYYYMMDDHH"
+            label VERSION "Version of model running."
+          
+      endfamily
+      
+   endfamily
+
+
+
+
+   
+endsuite

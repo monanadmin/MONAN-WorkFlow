@@ -1,0 +1,70 @@
+%include <head.h>
+      
+#-----------------------------------------------------------------------------#
+# !SCRIPT: run_pre
+#
+# !DESCRIPTION:
+#     Script to run the pre of MONAN model .
+#     
+#-----------------------------------------------------------------------------#
+
+
+# Standart directories variables:---------------------------------------
+#DIRHOMES=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMES}  
+#DIRHOMED=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMED}  
+#SCRIPTS=${DIRHOMES}/scripts;                                      mkdir -p ${SCRIPTS}
+#DATAIN=${DIRHOMED}/datain;                                        #mkdir -p ${DATAIN}
+#DATAOUT=${DIRHOMED}/dataout;                                      #mkdir -p ${DATAOUT}
+#SOURCES=${DIRHOMES}/sources;                                      #mkdir -p ${SOURCES}
+#EXECS=${DIRHOMED}/execs;                                          #mkdir -p ${EXECS}
+#----------------------------------------------------------------------
+
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYY%%MM%%DD%00
+FCST=%FCSTH%
+#-------------------------------------------------------
+
+
+# Local variables:--------------------------------------
+DIRSCRIPTSCDCT=${DIRSUITE}/MONAN_STAB/scripts_CD-CT
+GCCCIS=/mnt/beegfs/monan/CIs
+BNDDIR=/oper/dados/ioper/tempo/${EXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
+start_date=${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}:00:00
+#-------------------------------------------------------
+
+#CR: For now, please do not remove this yet:
+#ecflow_client --requeue=/MONAN_STAB/Products
+#ecflow_client --requeue=/MONAN_STAB/Manute
+
+
+MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/VERSION.txt)
+ecflow_client --label=Info "Running  2.pre_processing.bash"
+ecflow_client --label=VERSION "${MVERSION}"
+# Run the 2.pre_processing.bash script from scripts_CDCT oficial repo:----------
+cd ${DIRSCRIPTSCDCT}/scripts
+${DIRSCRIPTSCDCT}/scripts/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+
+#-------------------------------------------------------
+
+
+# Copia gfs.t00z.pgrb2.0p25.f000.*grib2 e GFS:* para /mnt/beegfs/monan/CIs/GFS
+mkdir -p ${GCCCIS}/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+cp -f ${BNDDIR}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ${GCCCIS}/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+cp -f ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Pre/GFS\:${start_date:0:13} ${GCCCIS}/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+
+
+# Copia x1.${RES}.init.nc para /mnt/beegfs/monan/CIs/MONAN
+mkdir -p ${GCCCIS}/MONAN/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+cp -f ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Pre/x1.${RES}.init.nc ${GCCCIS}/MONAN/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Pre
+
+
+
+
+sleep 5
+
+%include <tail.h>
+# file is served by ecflow-server

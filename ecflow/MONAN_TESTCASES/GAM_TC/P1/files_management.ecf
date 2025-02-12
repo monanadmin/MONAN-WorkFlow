@@ -1,0 +1,68 @@
+%include <head.h>
+# enforcado pq as copias estao sendo feitas no script 4.
+%include <tail.h>
+# file is served by ecflow-server
+      
+
+ecflow_client --label=Info "Inicio... "
+
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYYMMDDP%00
+FCST=%FCSTH%
+#-------------------------------------------------------
+
+# Local variables:-------------------------------------
+# da conta monan:
+DIRFIGURES=%ECF_HOME%/%SUITE%/MONAN_CDCT/Products/MONAN-Products/dataout
+DIRFTP=/pesq/share/monan/testes_continuos_CD-CT/html
+DIRSCRIPTSCDCT=/mnt/beegfs/monan/scripts_CD-CT_TC
+DIRBEEGFSPOST=/mnt/beegfs/monan/tc
+hh=${YYYYMMDDHHi:8:2}
+#-------------------------------------------------------
+
+
+
+
+
+
+
+#=========================================================================================================
+# POST
+#=========================================================================================================
+#
+# Move output post files to BEEGFS area:
+ecflow_client --label=Info "Copying post files to BEEGFS area. "
+
+if [ ! -s ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/MONAN_DIAG_G_POS_${EXP}_${YYYYMMDDHHi}.00.00.x${RES}L55.nc ]
+then
+   echo "Post file was not generated. Check it!"
+   ecflow_client --label=Info "Post file was not generated. Check it!"
+   exit
+fi
+
+if [ ! -s ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/VERSION.txt ]
+then
+   echo "VERSION.txt file was not generated. Check it!"
+   ecflow_client --label=Info "VERSION.txt file was not generated. Check it!"
+   exit
+fi
+  
+monanversion=$(cat ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post/VERSION.txt)
+mkdir -p ${DIRBEEGFSPOST}/${monanversion}/%FAMILY1%/${YYYYMMDDHHi}/
+
+cp -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post ${DIRBEEGFSPOST}/${monanversion}/%FAMILY1%/${YYYYMMDDHHi}/
+
+
+# And remove them from the original output diretory:
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Model
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post
+rm -fr ${DIRSCRIPTSCDCT}/datain/${YYYYMMDDHHi}
+
+
+#-----------------------------------------------------------------------------------------------------------
+
+%include <tail.h>
+# file is served by ecflow-server
