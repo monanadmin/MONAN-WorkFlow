@@ -1,38 +1,67 @@
 
 # MONAN-WorkFlow
+
 Work flow ECF scripts for pre-operational ECFLOW suit.
+
+### History
+
+0.1.0 - Stable version.
 
 ### This version is for figures production only
 
 Cloning this repository, you will get this files:
 
 ~~~
-MONAN-WorkFlow
-    ├── ecflow
-    │   ├── clone_scripts_CD-CT.bash
-    │   ├── eclogs
-    │   │   ├── atualizadef.ksh
-    │   │   ├── deletedef.ksh
-    │   │   ├── inicializadef.ksh
-    │   │   ├── openecview.ksh
-    │   │   ├── start.ksh
-    │   │   ├── stop.ksh
-    │   │   └── template.ecf
-    │   ├── includes
-    │   │   ├── head.h
-    │   │   └── tail.h
-    │   ├── MONAN
-    │   │   ├── Manut.ecf
-    │   │   ├── Products.ecf
-    │   │   └── Products
-    │   │       └── scripts
-    │   │           ├── gera_figs.py
-    │   │           ├── setenv.bash
-    │   │           ├── sub_py.bash
-    │   │           └── requirements.txt
-    │   └── MONAN.def
-    └── README.md
+├── MONAN-WorkFlow
+│   ├── ecflow
+│   │   ├── clone_MONAN-Products.bash
+│   │   ├── eclogs
+│   │   │   ├── atualizadef.ksh
+│   │   │   ├── deletedef.ksh
+│   │   │   ├── inicializadef.ksh
+│   │   │   ├── openecview.ksh
+│   │   │   ├── start_DEV.ksh
+│   │   │   ├── start.ksh
+│   │   │   ├── stop_DEV.ksh
+│   │   │   ├── stop.ksh
+│   │   │   └── template.ecf
+│   │   ├── includes
+│   │   │   ├── head.h
+│   │   │   └── tail.h
+│   │   ├── MONAN_DEV.def
+│   │   ├── MONAN_STAB
+│   │   │   ├── clone_MONAN-scripts_CDCT.bash
+│   │   │   └── MONAN_CDCT
+│   │   │       ├── model.ecf
+│   │   │       ├── post.ecf
+│   │   │       ├── pre.ecf
+│   │   │       └── Products
+│   │   │           ├── compare_dev_stable.ecf
+│   │   │           └── sanity_check.ecf
+│   │   ├── MONAN_STAB.def
+│   │   ├── MONAN_TESTCASES
+│   │   │   ├── clone_MONAN-scripts_CDCT.bash
+│   │   │   └── GAM_TC
+│   │   │       ├── P1
+│   │   │       │   ├── files_management.ecf
+│   │   │       │   ├── model.ecf
+│   │   │       │   ├── post.ecf
+│   │   │       │   └── pre.ecf
+│   │   │       ├── P2
+│   │   │       │   ├── files_management.ecf 
+│   │   │       │   ├── model.ecf 
+│   │   │       │   ├── post.ecf 
+│   │   │       │   └── pre.ecf 
+│   │   │       └── P3
+│   │   │           ├── files_management.ecf
+│   │   │           ├── model.ecf
+│   │   │           ├── post.ecf
+│   │   │           └── pre.ecf
+│   │   └── MONAN_TESTCASES.def
+│   └── README.md
+
 ~~~
+
 
 ### Quick starting 
 
