@@ -1,0 +1,48 @@
+%include <head_DEV.h>
+      
+#-----------------------------------------------------------------------------#
+# !SCRIPT: run_model
+#
+# !DESCRIPTION:
+#     Script to run the model of MONAN.
+#     
+#-----------------------------------------------------------------------------#
+
+
+# Standart directories variables:---------------------------------------
+#DIRHOMES=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMES}  
+#DIRHOMED=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMED}  
+#SCRIPTS=${DIRHOMES}/scripts;                                      mkdir -p ${SCRIPTS}
+#DATAIN=${DIRHOMED}/datain;                                        #mkdir -p ${DATAIN}
+#DATAOUT=${DIRHOMED}/dataout;                                      #mkdir -p ${DATAOUT}
+#SOURCES=${DIRHOMES}/sources;                                      #mkdir -p ${SOURCES}
+#EXECS=${DIRHOMED}/execs;                                          #mkdir -p ${EXECS}
+#----------------------------------------------------------------------
+
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYY%%MM%%DD%00
+FCST=%FCSTH%
+#-------------------------------------------------------
+
+
+# Local variables:--------------------------------------
+DIRSCRIPTSCDCT=${DIRSUITE}/MONAN_DEV/GCC_DEV/scripts_CD-CT
+#-------------------------------------------------------
+
+
+MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/VERSION.txt)
+ecflow_client --label=Info "Running  3.run_model.bash"
+ecflow_client --label=date "${YYYYMMDDHHi}"
+ecflow_client --label=VERSION "${MVERSION}"
+# Run the 3.run_model.bash script from scripts_CDCT oficial repo:----------
+cd ${DIRSCRIPTSCDCT}/scripts
+${DIRSCRIPTSCDCT}/scripts/3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+#-------------------------------------------------------
+
+
+
+%include <tail.h>
+# file is served by ecflow-server

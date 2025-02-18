@@ -6,10 +6,60 @@ suite MONAN_DEV
    edit ECF_INCLUDE "/mnt/beegfs/monan/DEV/MONAN-WorkFlow/ecflow/includes"
    edit ECF_TRIES "1"
 
+   family GCC_STAB
+      cron 06:00
+      
+      edit EXP "GFS"
+      edit RES "1024002"
+      edit FCSTH "24"
 
-   family teste
-      cron 09:00
+      task pre
+         label Info "pre-processing MONAN - script 2.run_pre.bash of scripts_CD-CT"
+         label date "YYYYMMDDHH"
+         label VERSION "Version of Model"
+      
+      task model
+         trigger /MONAN_DEV/GCC_STAB/pre eq complete
+         label Info "model MONAN - script 3.run_model.bash of scripts_CD-CT"
+         label date "YYYYMMDDHH"
+         label VERSION "Version of Model"
+      
+     task post
+         trigger /MONAN_DEV/GCC_STAB/model eq complete
+         label Info "post-processing MONAN - script 4.run_post.bash of scripts_CD-CT"
+         label date "YYYYMMDDHH"
+         label VERSION "Version of Model"
    endfamily
 
-   
+   family GCC_DEV
+      cron 20:00
+      
+      edit EXP "GFS"
+      edit RES "1024002"
+      edit FCSTH "24"
+
+      task compile
+         label Info "compile and install MONAN - script clone_MONAN-scripts_CDCT.bash"
+         label date "YYYYMMDDHH"
+         label VERSION "Version of Model"
+         
+      task pre
+         trigger /MONAN_DEV/GCC_DEV/compile eq complete
+         label Info "pre-processing MONAN - script 2.run_pre.bash of scripts_CD-CT"
+         label date "YYYYMMDDHH"
+         label VERSION "Version of Model"
+      
+      task model
+         trigger /MONAN_DEV/GCC_DEV/pre eq complete
+         label Info "model MONAN - script 3.run_model.bash of scripts_CD-CT"
+         label date "YYYYMMDDHH"
+         label VERSION "Version of Model"
+      
+     task post
+         trigger /MONAN_DEV/GCC_DEV/model eq complete
+         label Info "post-processing MONAN - script 4.run_post.bash of scripts_CD-CT"
+         label date "YYYYMMDDHH"
+         label VERSION "Version of Model"
+      endfamily
+
 endsuite
