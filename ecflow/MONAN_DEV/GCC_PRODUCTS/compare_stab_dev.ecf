@@ -46,7 +46,8 @@ cd ${DIRMONANPRODUCTS}/scripts
 ${DIRMONANPRODUCTS}/scripts/6.run_compare_dev_stable.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} ${DIRSCRIPTSCDCT_STAB} ${DIRSCRIPTSCDCT_DEV} ${TYPERUN}
 #-------------------------------------------------------
 
-
+# altera o evento do post_stab para clear novamente
+ecflow_client --alter change event done_post_dev clear /MONAN_DEV/GCC_DEV/post
 
 %include <tail.h>
 # file is served by ecflow-server

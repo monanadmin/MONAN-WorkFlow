@@ -44,7 +44,8 @@ cd ${DIRMONANPRODUCTS}/scripts
 ${DIRMONANPRODUCTS}/scripts/5.run_sanity_check.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} ${DIRSCRIPTSCDCT} ${TYPERUN}
 #-------------------------------------------------------
 
-
+# altera o evento do post_stab para clear novamente
+ecflow_client --alter change event done_post_stab clear /MONAN_DEV/GCC_STAB/post
 
 %include <tail.h>
 # file is served by ecflow-server

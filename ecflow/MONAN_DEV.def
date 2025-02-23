@@ -29,6 +29,8 @@ suite MONAN_DEV
          label Info "post-processing MONAN - script 4.run_post.bash of scripts_CD-CT"
          label date "YYYYMMDDHH"
          label VERSION "Version of Model"
+         event done_post_stab
+
    endfamily
 
    family GCC_DEV
@@ -60,30 +62,33 @@ suite MONAN_DEV
          label Info "post-processing MONAN - script 4.run_post.bash of scripts_CD-CT"
          label date "YYYYMMDDHH"
          label VERSION "Version of Model"
+         event done_post_dev
+
    endfamily
 
    family GCC_PRODUCTS
-      cron 22:00
-
       edit EXP "GFS"
       edit RES "1024002"
       edit FCSTH "24"
 
       task sanity_check_stab
+         trigger /MONAN_DEV/GCC_STAB/post:done_post_stab
          label Info "sanity_check stab - MONAN-Products"
          label date "YYYYMMDDHH"
          label VERSION "Version of Model"
 
       task sanity_check_dev
-         trigger /MONAN_DEV/GCC_PRODUCTS/sanity_check_stab eq complete
+         trigger /MONAN_DEV/GCC_DEV/post:done_post_dev
          label Info "sanity_check dev - MONAN-Products"
          label date "YYYYMMDDHH"
          label VERSION "Version of Model"
 
       task compare_stab_dev
+         trigger /MONAN_DEV/GCC_DEV/post:done_post_dev
          label Info "compare stab and dev - MONAN-Products"
          label date "YYYYMMDDHH"
          label VERSION "Version of Model"
+
    endfamily
 
 endsuite
