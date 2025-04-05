@@ -7,8 +7,7 @@ set -x # echo script lines as they are executed
  
 # Defines the variables that are needed for any communication with ECF
 export ECF_PORT=%ECF_PORT%    # The server port number
-export ECF_HOST=egeon-login1-180.cptec.inpe.br    # Alteração apos migração COIDS
-#export ECF_HOST=%ECF_HOST%    # The host name where the server is running
+export ECF_HOST=%ECF_HOST%    # The host name where the server is running
 export ECF_NAME=%ECF_NAME%    # The name of this current task
 export ECF_PASS=%ECF_PASS%    # A unique password
 export ECF_TRYNO=%ECF_TRYNO%  # Current try number of the task
