@@ -30,8 +30,7 @@ FCST=%FCSTH%
 
 # Local variables:--------------------------------------
 DIRSCRIPTSCDCT=${DIRSUITE}/MONAN_DEV/GCC_STAB/scripts_CD-CT
-DIRMONANPRODUCTS=${DIRSUITE}/MONAN_DEV/GCC_PRODUCTS/MONAN-Products
-TYPERUN="sanity_stab"
+DIRMONANPRODUCTS=${DIRSUITE}/MONAN_DEV/GCC_STAB/products/MONAN-Products
 #-------------------------------------------------------
 
 
@@ -41,7 +40,7 @@ ecflow_client --label=date "${YYYYMMDDHHi}"
 ecflow_client --label=VERSION "${MVERSION}"
 # Run the 5.run_sanity_check.bash oficial repo:----------
 cd ${DIRMONANPRODUCTS}/scripts
-${DIRMONANPRODUCTS}/scripts/5.run_sanity_check.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} ${DIRSCRIPTSCDCT} ${TYPERUN}
+${DIRMONANPRODUCTS}/scripts/5.run_sanity_check.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} ${DIRSCRIPTSCDCT}
 #-------------------------------------------------------
 
 # altera o evento do post_stab para clear novamente

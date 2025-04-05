@@ -2,7 +2,7 @@ suite MONAN_DEV
    defstatus suspended
 
    edit ECF_HOME "/mnt/beegfs/monan/DEV/MONAN-WorkFlow/ecflow"
-   edit ECF_HOST "egeon-login1.cptec.inpe.br"
+   edit ECF_HOST "egeon-login.cptec.inpe.br"
    edit ECF_INCLUDE "/mnt/beegfs/monan/DEV/MONAN-WorkFlow/ecflow/includes"
    edit ECF_TRIES "1"
 
@@ -24,12 +24,20 @@ suite MONAN_DEV
          label date "YYYYMMDDHH"
          label VERSION "Version of Model"
       
-     task post
+      task post
          trigger /MONAN_DEV/GCC_STAB/model eq complete
          label Info "post-processing MONAN - script 4.run_post.bash of scripts_CD-CT"
          label date "YYYYMMDDHH"
          label VERSION "Version of Model"
          event done_post_stab
+
+      family products
+         task sanity_check
+            trigger /MONAN_DEV/GCC_STAB/post eq complete
+            label Info "sanity_check - MONAN-Products"
+            label date "YYYYMMDDHH"
+            label VERSION "Version of Model"
+      endfamily       
 
    endfamily
 
@@ -64,25 +72,21 @@ suite MONAN_DEV
          label VERSION "Version of Model"
          event done_post_dev
 
+      family products
+         task sanity_check
+            trigger /MONAN_DEV/GCC_DEV/post eq complete
+            label Info "sanity_check - MONAN-Products"
+            label date "YYYYMMDDHH"
+            label VERSION "Version of Model"
+      endfamily
+
    endfamily
 
    family GCC_PRODUCTS
       edit EXP "GFS"
       edit RES "1024002"
       edit FCSTH "24"
-
-      task sanity_check_stab
-         trigger /MONAN_DEV/GCC_STAB/post:done_post_stab
-         label Info "sanity_check stab - MONAN-Products"
-         label date "YYYYMMDDHH"
-         label VERSION "Version of Model"
-
-      task sanity_check_dev
-         trigger /MONAN_DEV/GCC_DEV/post:done_post_dev
-         label Info "sanity_check dev - MONAN-Products"
-         label date "YYYYMMDDHH"
-         label VERSION "Version of Model"
-
+          
       task compare_stab_dev
          trigger /MONAN_DEV/GCC_DEV/post:done_post_dev
          label Info "compare stab and dev - MONAN-Products"

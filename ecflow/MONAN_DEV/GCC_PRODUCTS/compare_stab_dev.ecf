@@ -32,7 +32,6 @@ FCST=%FCSTH%
 DIRSCRIPTSCDCT_STAB=${DIRSUITE}/MONAN_DEV/GCC_STAB/scripts_CD-CT
 DIRSCRIPTSCDCT_DEV=${DIRSUITE}/MONAN_DEV/GCC_DEV/scripts_CD-CT
 DIRMONANPRODUCTS=${DIRSUITE}/MONAN_DEV/GCC_PRODUCTS/MONAN-Products
-TYPERUN="compare_stab_dev"
 #-------------------------------------------------------
 
 
@@ -43,7 +42,7 @@ ecflow_client --label=date "${YYYYMMDDHHi}"
 ecflow_client --label=VERSION "Stab: ${MVERSION_STAB} - Dev: ${MVERSION_DEV}"
 # Run the 6.run_compare_dev_stable.bash oficial repo:----------
 cd ${DIRMONANPRODUCTS}/scripts
-${DIRMONANPRODUCTS}/scripts/6.run_compare_dev_stable.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} ${DIRSCRIPTSCDCT_STAB} ${DIRSCRIPTSCDCT_DEV} ${TYPERUN}
+${DIRMONANPRODUCTS}/scripts/6.run_compare_dev_stable.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} ${DIRSCRIPTSCDCT_STAB} ${DIRSCRIPTSCDCT_DEV} 
 #-------------------------------------------------------
 
 # altera o evento do post_stab para clear novamente
