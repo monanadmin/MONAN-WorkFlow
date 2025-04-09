@@ -7,7 +7,7 @@ suite MONAN_DEV
    edit ECF_TRIES "1"
 
    family GCC_STAB
-      cron 06:00
+      cron 08:30
       
       edit EXP "GFS"
       edit RES "1024002"
@@ -42,7 +42,7 @@ suite MONAN_DEV
    endfamily
 
    family GCC_DEV
-      cron 18:00
+      cron 20:30
       
       edit EXP "GFS"
       edit RES "1024002"
