@@ -2,7 +2,7 @@ suite MONAN_TESTCASES
    defstatus suspended
 
    edit ECF_HOME "/mnt/beegfs/monan/STAB/MONAN-WorkFlow/ecflow"
-   edit ECF_HOST "egeon-login1.cptec.inpe.br"
+   edit ECF_HOST "egeon-login.cptec.inpe.br"
    edit ECF_INCLUDE "/mnt/beegfs/monan/STAB/MONAN-WorkFlow/ecflow/includes"
    edit ECF_TRIES "1"
 

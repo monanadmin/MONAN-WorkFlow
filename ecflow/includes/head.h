@@ -48,6 +48,7 @@ trap '{ echo "Killed by a signal"; ERROR ; }' 1 2 3 4 5 6 7 8 10 12 13 15
 #
 export FAMILY1=%FAMILY1%
 export DIRSUITE=/mnt/beegfs/monan/STAB/MONAN-WorkFlow/ecflow
+export HH=$(echo "%ECF_TIME%" | cut -d: -f1)
 
 
 
