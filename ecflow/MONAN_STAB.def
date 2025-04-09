@@ -1,5 +1,5 @@
 suite MONAN_STAB
-   #defstatus suspended
+   defstatus suspended
 
    edit ECF_HOME "/mnt/beegfs/monan/STAB/MONAN-WorkFlow/ecflow"
    edit ECF_HOST "egeon-login.cptec.inpe.br"
@@ -7,17 +7,24 @@ suite MONAN_STAB
    edit ECF_TRIES "1"
 
    edit EXP "GFS"
-   edit RES "1024002"
    edit FCSTH "240"
    
    
    
 
    family MONAN_CDCT
-      cron 06:10
-      cron 18:10
 
-      task pre
+      task pre_24km
+         cron 06:10
+         cron 18:10
+         edit RES "1024002"
+         label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
+         label VERSION "Version of model running."
+      
+      task pre_10km
+         cron 06:40
+         cron 18:40
+         edit RES "5898242"
          label Info "Tarefa que executa o script 2.run_pre.bash de scripts_CD-CT."
          label VERSION "Version of model running."
    

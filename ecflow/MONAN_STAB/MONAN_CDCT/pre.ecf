@@ -47,7 +47,9 @@ start_date=${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHH
 #ecflow_client --requeue=/MONAN_STAB/Manute
 
 
-MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/VERSION.txt)
+MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/MONAN-VERSION.txt)
+
+
 ecflow_client --label=Info "Running  2.pre_processing.bash"
 ecflow_client --label=VERSION "${MVERSION}"
 # Run the 2.pre_processing.bash script from scripts_CDCT oficial repo:----------

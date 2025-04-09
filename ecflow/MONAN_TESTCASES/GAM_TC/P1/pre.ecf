@@ -41,7 +41,7 @@ BNDDIR=/oper/dados/ioper/tempo/${EXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDH
 
 
 
-MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/VERSION.txt)
+MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/MONAN-VERSION.txt)
 ecflow_client --label=Info "Running  2.pre_processing.bash"
 ecflow_client --label=VERSION "${MVERSION}"
 # Run the 2.pre_processing.bash script from scripts_CDCT oficial repo:----------

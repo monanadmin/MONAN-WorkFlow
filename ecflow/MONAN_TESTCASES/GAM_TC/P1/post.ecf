@@ -37,7 +37,7 @@ DIRBEEGFSPOST=/mnt/beegfs/monan/tc
 
 
 
-MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/VERSION.txt)
+MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/MONAN-VERSION.txt)
 ecflow_client --label=Info "Running  4.run_model.bash"
 ecflow_client --label=VERSION "${MVERSION}"
 # Run the 4.run_model.bash script from scripts_CDCT oficial repo:----------
@@ -54,8 +54,7 @@ mkdir -p ${DIRBEEGFSPOST}/${MVERSION}/${FAMILY1}/${YYYYMMDDHHi}/
 cp -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post ${DIRBEEGFSPOST}/${MVERSION}/${FAMILY1}/${YYYYMMDDHHi}/
 
 # And remove them from the original output diretory dataout:
-rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Model
-rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post
+rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}
 rm -fr ${DIRSCRIPTSCDCT}/datain/${YYYYMMDDHHi}
 
 

@@ -35,7 +35,7 @@ DIRSCRIPTSCDCT=${DIRSUITE}/MONAN_TESTCASES/scripts_CD-CT
 
 
 
-MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/VERSION.txt)
+MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/MONAN-VERSION.txt)
 ecflow_client --label=Info "Running  3.run_model.bash"
 ecflow_client --label=VERSION "${MVERSION}"
 # Run the 4.run_model.bash script from scripts_CDCT oficial repo:----------
