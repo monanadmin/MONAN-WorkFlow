@@ -58,6 +58,11 @@ sleep 5
 #rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post
 #rm -fr ${DIRSCRIPTSCDCT}/datain/${YYYYMMDDHHi}
 
-
+# requeue a task dos produtos e ativação evento done para ativar o trigger (sleep para dar tempo antes de requeue automatico devido ao cron)
+ecflow_client --requeue /MONAN_DEV/GCC_PRODUCTS/compare_stab_dev
+sleep 5
+ecflow_client --event done_post_dev set
+sleep 5
 %include <tail.h>
+
 # file is served by ecflow-server

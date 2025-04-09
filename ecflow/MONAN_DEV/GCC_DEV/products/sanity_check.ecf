@@ -1,10 +1,10 @@
 %include <head_DEV.h>
-
+      
 #-----------------------------------------------------------------------------#
-# !SCRIPT: run_post
+# !SCRIPT: sanity_check_dev
 #
 # !DESCRIPTION:
-#     Script to run post-processing of MONAN model .
+#     Script to run sanity_check_dev of MONAN-Products.
 #     
 #-----------------------------------------------------------------------------#
 
@@ -25,43 +25,26 @@ EXP=%EXP%
 RES=%RES%
 YYYYMMDDHHi=%YYYY%%MM%%DD%00
 FCST=%FCSTH%
-#export FAMILY1=%FAMILY1%
 #-------------------------------------------------------
 
 
 # Local variables:--------------------------------------
-DIRSCRIPTSCDCT=${DIRSUITE}/MONAN_DEV/GCC_STAB/scripts_CD-CT
-#DIRBEEGFSPOST=/mnt/beegfs/monan/tc
+DIRSCRIPTSCDCT=${DIRSUITE}/MONAN_DEV/GCC_DEV/scripts_CD-CT
+DIRMONANPRODUCTS=${DIRSUITE}/MONAN_DEV/GCC_DEV/products/MONAN-Products
 #-------------------------------------------------------
-
 
 
 MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/VERSION.txt)
-ecflow_client --label=Info "Running  4.run_model.bash"
+ecflow_client --label=Info "Running  5.run_sanity_check.bash to GCC_DEV"
 ecflow_client --label=date "${YYYYMMDDHHi}"
 ecflow_client --label=VERSION "${MVERSION}"
-# Run the 4.run_model.bash script from scripts_CDCT oficial repo:----------
-cd ${DIRSCRIPTSCDCT}/scripts
-${DIRSCRIPTSCDCT}/scripts/4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+# Run the 5.run_sanity_check.bash oficial repo:----------
+cd ${DIRMONANPRODUCTS}/scripts
+${DIRMONANPRODUCTS}/scripts/5.run_sanity_check.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} ${DIRSCRIPTSCDCT}
 #-------------------------------------------------------
-sleep 5
 
-
-#CR: criando diretorio oficial final:
-#mkdir -p ${DIRBEEGFSPOST}/${MVERSION}/${FAMILY1}/${YYYYMMDDHHi}/
-
-# copy post:
-#cp -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post ${DIRBEEGFSPOST}/${MVERSION}/${FAMILY1}/${YYYYMMDDHHi}/
-
-# And remove them from the original output diretory dataout:
-#rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Model
-#rm -fr ${DIRSCRIPTSCDCT}/dataout/${YYYYMMDDHHi}/Post
-#rm -fr ${DIRSCRIPTSCDCT}/datain/${YYYYMMDDHHi}
-
-# requeue a task dos produtos e ativação evento done para ativar o trigger (sleep para dar tempo antes de requeue automatico devido ao cron)
-sleep 5
-ecflow_client --event done_post_stab set
-sleep 5
+# altera o evento do post_stab para clear novamente
+ecflow_client --alter change event done_post_dev clear /MONAN_DEV/GCC_DEV/post
 
 %include <tail.h>
 # file is served by ecflow-server
