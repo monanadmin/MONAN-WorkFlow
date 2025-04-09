@@ -1,0 +1,48 @@
+%include <head_DEV.h>
+      
+#-----------------------------------------------------------------------------#
+# !SCRIPT: run_compile
+#
+# !DESCRIPTION:
+#     Script to run the clone_MONAN-scripts to install and compile MONAN.
+#     
+#-----------------------------------------------------------------------------#
+
+
+# Standart directories variables:---------------------------------------
+#DIRHOMES=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMES}  
+#DIRHOMED=%ECF_HOME%/%SUITE%/%FAMILY%/MONAN-Products;  mkdir -p ${DIRHOMED}  
+#SCRIPTS=${DIRHOMES}/scripts;                                      mkdir -p ${SCRIPTS}
+#DATAIN=${DIRHOMED}/datain;                                        #mkdir -p ${DATAIN}
+#DATAOUT=${DIRHOMED}/dataout;                                      #mkdir -p ${DATAOUT}
+#SOURCES=${DIRHOMES}/sources;                                      #mkdir -p ${SOURCES}
+#EXECS=${DIRHOMED}/execs;                                          #mkdir -p ${EXECS}
+#----------------------------------------------------------------------
+
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=%YYYY%%MM%%DD%00
+FCST=%FCSTH%
+#-------------------------------------------------------
+
+
+# Local variables:--------------------------------------
+DIRSCRIPTSCDCT=${DIRSUITE}/MONAN_DEV/GCC_DEV/scripts_CD-CT
+#-------------------------------------------------------
+
+
+ecflow_client --label=Info "Running  clone_MONAN-scripts_CDCT.bash"
+ecflow_client --label=date "${YYYYMMDDHHi}"
+# Run the clone_MONAN-scripts_CDCT.bash:----------
+cd ${DIRSUITE}/MONAN_DEV/GCC_DEV
+clone_MONAN-scripts_CDCT.bash
+MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/VERSION.txt)
+ecflow_client --label=VERSION "${MVERSION}"
+#-------------------------------------------------------
+
+
+
+%include <tail.h>
+# file is served by ecflow-server
