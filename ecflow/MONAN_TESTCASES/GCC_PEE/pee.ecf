@@ -1,0 +1,161 @@
+%include <head.h>
+      
+#-----------------------------------------------------------------------------#
+# !SCRIPT: pee
+#
+# !DESCRIPTION:
+#     Script to evaluate the PEE index of MONAN model .
+#     
+#-----------------------------------------------------------------------------#
+
+
+
+
+# Input variables:--------------------------------------
+EXP=%EXP%
+RES=%RES%
+YYYYMMDDHHi=2024010100
+FCST=%FCSTH%
+#-------------------------------------------------------
+ecflow_client --label=date "${YYYYMMDDHHi}"
+
+
+# Local variables:--------------------------------------
+DIRSCRIPTSCDCT=${DIRSUITE}/${SUITE}/GCC_PEE/scripts_CD-CT
+MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/MONAN-VERSION.txt)
+CMPASVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/CONVMPAS-VERSION.txt)
+SCDCTVERSION=$(cat ${DIRSCRIPTSCDCT}/VERSION.txt)
+GCCCIS=/mnt/beegfs/monan/CIs/${EXP}
+BNDDIR=/oper/dados/ioper/tempo/${EXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
+DIRBEEGFSPEE=/mnt/beegfs/monan/PEE
+NCPN=64
+#-------------------------------------------------------
+
+
+ecflow_client --label=Info "Verifying all runtime data files."
+ecflow_client --label=VERSION "ScDCT:${SCDCTVERSION} / MONAN:${MVERSION}"
+
+
+# Verificando se existem todos os logs necessarios:
+for nnodes in 1 8 16
+do
+   ncores=$(echo "${nnodes}*${NCPN}" | bc )
+   for ntimes in $(seq 1 3)
+   do 
+      if [ ! -s ${DIRBEEGFSPEE}/${MVERSION}/log.atmosphere.0000.out.${nnodes}n-${ncores}c-${NCPN}cpn-${ntimes} ]
+      then
+         echo "At least the file ${DIRBEEGFSPEE}/log.atmosphere.0000.out.${nnodes}n-${ncores}c-${NCPN}cpn-${ntimes}} was not generated. \n"
+         ecflow_client --label=Info "At least the log file ${nnodes}n-${ncores}c-${NCPN}cpn-${ntimes}} was not generated."
+         exit
+      fi
+   done
+done
+
+
+
+
+# Coletando valores de total time de cada log:
+for nnodes in 1 8 16
+do
+   eval "tempos_${nnodes}=()"
+   ncores=$(echo "${nnodes}*${NCPN}" | bc )
+   
+   for ntimes in $(seq 1 3)
+   do 
+      tempo=$(grep "1 total time" ${DIRBEEGFSPEE}/${MVERSION}/log.atmosphere.0000.out.${nnodes}n-${ncores}c-${NCPN}cpn-${ntimes} | awk '{print $4}')
+      eval "tempos_${nnodes}+=(\"${tempo}\")"
+   done
+done
+
+
+# Somando os valores das instancias e calculando a media:
+rm -f ${DIRBEEGFSPEE}/${MVERSION}/pee.txt
+echo "#nnodes media_tempo speedup eficiencia" > "${DIRBEEGFSPEE}/${MVERSION}/pee.txt"
+
+# Primeiro, pega a media com 1 no para usar como base
+
+eval "valores=(\"\${tempos_1[@]}\")"
+soma=0
+for tempo in "${valores[@]}"; do
+    soma=$(echo "$soma + $tempo" | bc)
+done
+media_1=$(echo "scale=4; $soma / ${#valores[@]}" | bc)
+
+
+# Agora pra os demais vetores de tempo:
+for nnodes in 1 8 16
+do
+   eval "valores=(\"\${tempos_${nnodes}[@]}\")"
+   soma=0
+   count=0
+   
+   for tempo in "${valores[@]}"; do
+      soma=$(echo "$soma + $tempo" | bc)
+      count=$((count + 1))
+   done
+   
+   # Calcula a media com precisao de 2 casas decimais
+   media=$(echo "scale=2; $soma / $count" | bc)
+   
+   # Calcula speedup:
+   speedup=$(echo "scale=4; $media_1 / $media" | bc)
+   
+   # Eficiencia:
+   eficiencia=$(echo "scale=4; $speedup / $nnodes" | bc)
+
+   echo "${nnodes} $media $speedup $eficiencia" >> ${DIRBEEGFSPEE}/${MVERSION}/pee.txt
+done
+
+
+module load gnuplot-5.4.3-gcc-11.2.0-dmq2qdk
+
+# Plotando o grafico de tempo e GNUPLOT:
+cd ${DIRBEEGFSPEE}/${MVERSION}
+rm -f ${DIRBEEGFSPEE}/${MVERSION}/pee.png
+rm -f ${DIRBEEGFSPEE}/${MVERSION}/plot_pee.gp
+cat << EOF0 > ${DIRBEEGFSPEE}/${MVERSION}/plot_pee.gp
+set terminal pngcairo size 1000,800 enhanced font 'Verdana,10'
+set output 'pee.png'
+
+set multiplot layout 3,1 title "Desempenho MONAN ${MVERSION}"
+
+# Grafico 1: Tempo medio (3x)
+set title "Tempo Medio (3x)"
+set xlabel "Numero de Nos (${NCPN}cpn)"
+set ylabel "Tempo Medio (s)"
+set grid
+plot "pee.txt" using 1:2 with linespoints title "Tempo Medio" lt rgb "blue" pt 7 lw 2
+
+# Grafico 2: Speedup
+set title "Speedup"
+set xlabel "Numero de Nos (${NCPN}cpn)"
+set ylabel "Speedup"
+set grid
+plot "pee.txt" using 1:3 with linespoints title "Speedup" lt rgb "green" pt 7 lw 2
+
+
+# Gráfico 3: Eficiencia
+set title "Eficiencia"
+set xlabel "Numero de Nos (${NCPN}cpn)"
+set ylabel "Eficiencia"
+set grid
+plot "pee.txt" using 1:4 with linespoints title "Eficiencia" lt rgb "red" pt 7 lw 2
+
+unset multiplot
+EOF0
+chmod a+x ${DIRBEEGFSPEE}/${MVERSION}/plot_pee.gp
+gnuplot ${DIRBEEGFSPEE}/${MVERSION}/plot_pee.gp
+
+
+
+
+
+
+
+
+
+
+
+
+%include <tail.h>
+# file is served by ecflow-server

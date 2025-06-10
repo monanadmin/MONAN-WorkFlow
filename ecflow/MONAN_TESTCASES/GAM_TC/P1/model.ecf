@@ -30,7 +30,7 @@ ecflow_client --label=date "%YYYYMMDDP%"
 
 
 # Local variables:--------------------------------------
-DIRSCRIPTSCDCT=${DIRSUITE}/MONAN_TESTCASES/scripts_CD-CT
+DIRSCRIPTSCDCT=${DIRSUITE}/${SUITE}/GAM_TC/scripts_CD-CT
 #-------------------------------------------------------
 
 

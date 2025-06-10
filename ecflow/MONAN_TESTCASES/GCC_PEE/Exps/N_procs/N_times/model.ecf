@@ -1,10 +1,10 @@
 %include <head.h>
       
 #-----------------------------------------------------------------------------#
-# !SCRIPT: run_pre
+# !SCRIPT: run_poducts
 #
 # !DESCRIPTION:
-#     Script to run the pre of MONAN model .
+#     Script to run the model of MONAN.
 #     
 #-----------------------------------------------------------------------------#
 
@@ -23,32 +23,42 @@
 # Input variables:--------------------------------------
 EXP=%EXP%
 RES=%RES%
-YYYYMMDDHHi=%YYYYMMDDP%00
+YYYYMMDDHHi=2024010100
 FCST=%FCSTH%
+NNODES=%NNODES%
+NCPN=64
+NCORES=$(echo "${NNODES}*${NCPN}" | bc )
+NTIME=%NTIME%
+FILA=%FILA%
 #-------------------------------------------------------
-ecflow_client --label=date "%YYYYMMDDP%"
+ecflow_client --label=date "${YYYYMMDDHHi}"
+ecflow_client --label=ExpInfo "NNODES: ${NNODES} NCORES: ${NCORES} NCPN: ${NCPN} NTIME: ${NTIME}"
 
 
 # Local variables:--------------------------------------
-DIRSCRIPTSCDCT=${DIRSUITE}/${SUITE}/GAM_TC/scripts_CD-CT
-GCCCIS=/mnt/beegfs/monan/CIs/${EXP}
-BNDDIR=/oper/dados/ioper/tempo/${EXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
-#-------------------------------------------------------
-
-#CR: For now, please do not remove this yet:
-#ecflow_client --requeue=/MONAN_STAB/Products
-#ecflow_client --requeue=/MONAN_STAB/Manute
-
-
-
+DIRSCRIPTSCDCT=${DIRSUITE}/${SUITE}/GCC_PEE/scripts_CD-CT
 MVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/MONAN-VERSION.txt)
-ecflow_client --label=Info "Running  2.pre_processing.bash"
-ecflow_client --label=VERSION "${MVERSION}"
-# Run the 2.pre_processing.bash script from scripts_CDCT oficial repo:----------
-cd ${DIRSCRIPTSCDCT}/scripts
-${DIRSCRIPTSCDCT}/scripts/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
-
+CMPASVERSION=$(cat ${DIRSCRIPTSCDCT}/execs/CONVMPAS-VERSION.txt)
+SCDCTVERSION=$(cat ${DIRSCRIPTSCDCT}/VERSION.txt)
 #-------------------------------------------------------
+
+
+# Ajustando recursos computacionais para o experimento:
+$(sed -i "s;MODEL_ncores=.*$;MODEL_ncores=${NCORES};" ${DIRSCRIPTSCDCT}/scripts/setenv.bash)
+$(sed -i "s;MODEL_nnodes=.*$;MODEL_nnodes=${NNODES};" ${DIRSCRIPTSCDCT}/scripts/setenv.bash)
+$(sed -i "s;MODEL_ncpn=.*$;MODEL_ncpn=${NCPN};" ${DIRSCRIPTSCDCT}/scripts/setenv.bash)
+$(sed -i "s;MODEL_QUEUE=.*$;MODEL_QUEUE=${FILA};" ${DIRSCRIPTSCDCT}/scripts/setenv.bash)
+
+
+
+
+ecflow_client --label=Info "Running  3.run_model.bash"
+ecflow_client --label=VERSION "ScDCT:${SCDCTVERSION} / MONAN:${MVERSION}"
+# Run the 3.run_model.bash script from scripts_CDCT oficial repo:----------
+cd ${DIRSCRIPTSCDCT}/scripts
+${DIRSCRIPTSCDCT}/scripts/3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+#-------------------------------------------------------
+
 
 
 
